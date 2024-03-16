@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[project]
+name = "NAME_OF_PROJECT"
+description = "PROJECT_DESCRIPTION"
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+]
+
+[project.optional-dependencies]
+tests = [
+    'build',
+    'twine',
+    'pytest',
+    'flake8',
+]
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+where = ["src"]  # ["."] by default
+
