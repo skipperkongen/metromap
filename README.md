@@ -1,5 +1,5 @@
-# tennis-rank
-Computes tennis player ranks using pagerank algorithm on match graph
+# metromap
+Algorithm to layout and draw a network in the style typical of urban transit metro maps.
 
 ## Install
 
