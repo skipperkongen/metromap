@@ -114,16 +114,20 @@ export function fillMissingCoordinates(network: Network): Station[] {
   });
 }
 
+/** Average distance per route step between known stations, also across unknown ones in between. */
 function averageStep(route: string[], known: Map<string, { lat: number; lon: number }>): number {
   let total = 0;
-  let count = 0;
-  for (let i = 1; i < route.length; i++) {
-    const a = known.get(route[i - 1]!);
+  let steps = 0;
+  let prev = -1;
+  for (let i = 0; i < route.length; i++) {
     const b = known.get(route[i]!);
-    if (a && b) {
+    if (!b) continue;
+    if (prev >= 0) {
+      const a = known.get(route[prev]!)!;
       total += Math.hypot(a.lat - b.lat, a.lon - b.lon);
-      count++;
+      steps += i - prev;
     }
+    prev = i;
   }
-  return count > 0 ? total / count : 0.01;
+  return steps > 0 ? total / steps : 0.01;
 }

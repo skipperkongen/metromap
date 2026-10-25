@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 890 220" width="890" height="220" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+</defs>
+<rect width="890" height="220" rx="12" fill="#ffffff"/>
+<text x="20" y="28" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Edge pull</text>
+<text x="20" y="45" fill="#8a8a8f" font-size="12" text-anchor="start">toward the octilinear target</text>
+<text x="240" y="28" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Station repulsion</text>
+<text x="240" y="45" fill="#8a8a8f" font-size="12" text-anchor="start">if closer than 1 step</text>
+<text x="460" y="28" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Edge clearance</text>
+<text x="460" y="45" fill="#8a8a8f" font-size="12" text-anchor="start">if closer than ½ step</text>
+<text x="680" y="28" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Geographic anchor</text>
+<text x="680" y="45" fill="#8a8a8f" font-size="12" text-anchor="start">weight 0.3, fading to 0</text>
+<line x1="50" y1="130" x2="175" y2="130" stroke="#e5332a" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4"/>
+<line x1="50" y1="150" x2="175" y2="110" stroke="#0072bc" stroke-width="3" stroke-linecap="round"/>
+<line x1="50" y1="150" x2="50" y2="130" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+<line x1="175" y1="110" x2="175" y2="130" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+<circle cx="50" cy="150" r="4.5" fill="#fff" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="175" cy="110" r="4.5" fill="#fff" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="40" y="174" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">u</text>
+<text x="183" y="104" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">v</text>
+<text x="60" y="190" fill="#8a8a8f" font-size="12" text-anchor="start">each end moves half the error</text>
+<circle cx="305" cy="130" r="60" fill="none" stroke="#c9c9cc" stroke-dasharray="4 4"/>
+<line x1="305" y1="130" x2="270" y2="130" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+<line x1="340" y1="130" x2="375" y2="130" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+<circle cx="305" cy="130" r="4.5" fill="#fff" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="340" cy="130" r="4.5" fill="#fff" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="305" y="215" fill="#8a8a8f" font-size="12" text-anchor="middle">radius = 1 step</text>
+<line x1="465" y1="150" x2="635" y2="150" stroke="#00a651" stroke-width="3" stroke-linecap="round"/>
+<line x1="550" y1="138" x2="550" y2="106" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+<line x1="465" y1="150" x2="465" y2="168" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+<line x1="635" y1="150" x2="635" y2="168" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+<circle cx="465" cy="150" r="4.5" fill="#fff" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="635" cy="150" r="4.5" fill="#fff" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="550" cy="138" r="4.5" fill="#fff" stroke="#e5332a" stroke-width="1.8"/>
+<text x="560" y="124" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">s</text>
+<text x="460" y="200" fill="#8a8a8f" font-size="12" text-anchor="start">s moves off; the edge moves back</text>
+<circle cx="720" cy="160" r="6" fill="#fff" stroke="#8a8a8f" stroke-width="1.8" stroke-dasharray="3 2"/>
+<line x1="810" y1="105" x2="770" y2="129" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
+<circle cx="810" cy="105" r="4.5" fill="#fff" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="714" y="186" fill="#8a8a8f" font-size="12" text-anchor="start">real position</text>
+<text x="820" y="97" fill="#1d1d1f" font-size="12" text-anchor="start">current</text>
+</svg>

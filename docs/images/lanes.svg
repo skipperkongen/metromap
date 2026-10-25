@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" width="720" height="260" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+</defs>
+<rect width="720" height="260" rx="12" fill="#ffffff"/>
+<text x="20" y="28" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Shared edge: one lane per line</text>
+<text x="20" y="45" fill="#8a8a8f" font-size="12" text-anchor="start">offsets (i − (n−1)/2) × laneWidth, mitered at bends</text>
+<polyline points="40,179 203.7,179 306.4,76.4" fill="none" stroke="#00a651" stroke-width="7" stroke-linecap="round" stroke-linejoin="miter"/>
+<polyline points="40,170 200,170 300,70" fill="none" stroke="#f7a600" stroke-width="7" stroke-linecap="round" stroke-linejoin="miter"/>
+<polyline points="40,161 196.3,161 293.6,63.6" fill="none" stroke="#e5332a" stroke-width="7" stroke-linecap="round" stroke-linejoin="miter"/>
+<polyline points="40,170 200,170 300,70" fill="none" stroke="#1d1d1f" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+<line x1="60" y1="205" x2="140" y2="205" stroke="#8a8a8f" stroke-width="1.5" stroke-linecap="round" marker-end="url(#arrow)"/>
+<text x="150" y="209" fill="#8a8a8f" font-size="12" text-anchor="start">reference direction (first line's travel)</text>
+<text x="410" y="28" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Lines split at a station</text>
+<text x="410" y="45" fill="#8a8a8f" font-size="12" text-anchor="start">a line can change lane; its dot goes between the two ends</text>
+<polyline points="420,135.5 550,135.5 550,140 670,140" fill="none" stroke="#0072bc" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="420,144.5 550,144.5 550,140 650,240" fill="none" stroke="#f7a600" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M550 137.8L550 142.3" stroke="#1d1d1f" stroke-width="11.4" stroke-linecap="round"/>
+<path d="M550 137.8L550 142.3" stroke="#fff" stroke-width="8.4" stroke-linecap="round"/>
+<circle cx="550" cy="137.8" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="550" cy="142.3" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+</svg>

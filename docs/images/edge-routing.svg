@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 230" width="600" height="230" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+</defs>
+<rect width="600" height="230" rx="12" fill="#ffffff"/>
+<circle cx="60" cy="40" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="60" cy="120" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="60" cy="200" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="140" cy="40" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="140" cy="120" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="140" cy="200" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="220" cy="40" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="220" cy="120" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="220" cy="200" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="300" cy="40" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="300" cy="120" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="300" cy="200" r="1.8" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<polyline points="60,200 220,40 300,40" fill="none" stroke="#c9c9cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+<polyline points="60,200 140,200 300,40" fill="none" stroke="#c9c9cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/>
+<polyline points="60,200 140,200 300,40" fill="none" stroke="#00a651" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="60" cy="200" r="6" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="300" cy="40" r="6" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="220" cy="40" r="6" fill="#fff" stroke="#e5332a" stroke-width="1.8"/>
+<text x="48" y="224" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">a</text>
+<text x="312" y="45" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">b</text>
+<text x="220" y="26" fill="#e5332a" font-size="12" text-anchor="middle">another station</text>
+<text x="330" y="60" fill="#1d1d1f" font-size="12" text-anchor="start">a → b is 3 across, 2 up: not octilinear.</text>
+<text x="330" y="80" fill="#1d1d1f" font-size="12" text-anchor="start">Two one-bend paths exist (dashed):</text>
+<text x="330" y="98" fill="#1d1d1f" font-size="12" text-anchor="start">diagonal first, or straight first.</text>
+<text x="330" y="124" fill="#00a651" font-size="12" text-anchor="start">The bend farther from other</text>
+<text x="330" y="142" fill="#00a651" font-size="12" text-anchor="start">stations wins (solid).</text>
+</svg>

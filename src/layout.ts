@@ -12,7 +12,7 @@ export interface LayoutOptions {
   maxEdgeLength?: number;
 }
 
-interface Edge {
+export interface Edge {
   a: number;
   b: number;
   /** Indices of lines using this edge, in drawing order. */
@@ -39,25 +39,8 @@ export function layout(network: Network, options: LayoutOptions = {}): MetroMap 
   const padding = options.padding ?? 80;
   const maxLen = options.maxEdgeLength ?? 3;
 
-  const lines = normalizeLines(network);
-  const stations = fillMissingCoordinates(network);
-  const index = new Map(stations.map((s, i) => [s.name, i]));
-  const n = stations.length;
-  if (n === 0) return { width: 2 * padding, height: 2 * padding, stations: [], lines: [] };
-
-  const edges = buildEdges(lines, index);
-  const adjacency: number[][] = stations.map(() => []);
-  edges.forEach((e, i) => {
-    adjacency[e.a]!.push(i);
-    adjacency[e.b]!.push(i);
-  });
-
-  const geo = project(stations);
-  const pos = relax(geo, edges, maxLen);
-  const grid = snapToFreeCells(pos, adjacency);
-  refine(grid, edges, adjacency, lines, index, maxLen);
-
-  const paths = edges.map((e) => routeEdge(grid[e.a]!, grid[e.b]!, grid));
+  const { lines, stations, index, edges, grid, paths } = computeStages(network, maxLen);
+  if (stations.length === 0) return { width: 2 * padding, height: 2 * padding, stations: [], lines: [] };
 
   // Canvas transform.
   const xs = grid.map((p) => p.x);
@@ -122,6 +105,51 @@ export function layout(network: Network, options: LayoutOptions = {}): MetroMap 
   };
 }
 
+export interface Stages {
+  lines: NormalizedLine[];
+  stations: Station[];
+  index: Map<string, number>;
+  edges: Edge[];
+  /** Projected positions, in units of a typical station gap (null when unknown). */
+  geo: (Point | null)[];
+  /** After the continuous relaxation. */
+  relaxed: Point[];
+  /** After rounding to free grid cells. */
+  snapped: Point[];
+  /** After the local search: final grid positions. */
+  grid: Point[];
+  /** Grid path of each edge, before lane offsets. */
+  paths: Point[][];
+}
+
+/**
+ * Runs the layout pipeline up to the grid paths and returns every intermediate
+ * result. `layout()` builds its output from this; the docs figures draw it.
+ */
+export function computeStages(
+  network: Network,
+  maxLen = 3,
+  onRelaxStep?: (iteration: number, pos: Point[]) => void,
+): Stages {
+  const lines = normalizeLines(network);
+  const stations = fillMissingCoordinates(network);
+  const index = new Map(stations.map((s, i) => [s.name, i]));
+  const edges = buildEdges(lines, index);
+  const adjacency: number[][] = stations.map(() => []);
+  edges.forEach((e, i) => {
+    adjacency[e.a]!.push(i);
+    adjacency[e.b]!.push(i);
+  });
+
+  const geo = project(stations);
+  const relaxed = stations.length > 0 ? relax(geo, edges, maxLen, onRelaxStep) : [];
+  const snapped = snapToFreeCells(relaxed, adjacency);
+  const grid = snapped.map((p) => ({ ...p }));
+  refine(grid, edges, adjacency, lines, index, maxLen);
+  const paths = edges.map((e) => routeEdge(grid[e.a]!, grid[e.b]!, grid));
+  return { lines, stations, index, edges, geo, relaxed, snapped, grid, paths };
+}
+
 function buildEdges(lines: NormalizedLine[], index: Map<string, number>): Edge[] {
   const edges = new Map<string, Edge>();
   lines.forEach((line, li) => {
@@ -166,7 +194,12 @@ function project(stations: Station[]): (Point | null)[] {
  * with a whole-number length, keep stations apart, and drift away from geography
  * only as much as needed.
  */
-function relax(geo: (Point | null)[], edges: Edge[], maxLen: number): Point[] {
+function relax(
+  geo: (Point | null)[],
+  edges: Edge[],
+  maxLen: number,
+  onStep?: (iteration: number, pos: Point[]) => void,
+): Point[] {
   const n = geo.length;
   const known = geo.filter((p): p is Point => p !== null);
   const center = known.length > 0 ? average(known) : { x: 0, y: 0 };
@@ -175,6 +208,7 @@ function relax(geo: (Point | null)[], edges: Edge[], maxLen: number): Point[] {
   );
 
   const iterations = 600;
+  onStep?.(0, pos.map((p) => ({ ...p })));
   for (let it = 0; it < iterations; it++) {
     const progress = it / iterations;
     const sum = pos.map(() => ({ x: 0, y: 0 }));
@@ -240,12 +274,13 @@ function relax(geo: (Point | null)[], edges: Edge[], maxLen: number): Point[] {
         pos[i]!.y += (sum[i]!.y / weight[i]!) * 0.5;
       }
     }
+    onStep?.(it + 1, pos.map((p) => ({ ...p })));
   }
   return pos;
 }
 
 /** The octilinear vector closest to `d`, with a whole-number length between 1 and maxLen grid steps. */
-function octilinearTarget(d: Point, maxLen: number): Point {
+export function octilinearTarget(d: Point, maxLen: number): Point {
   const sector = ((Math.round(Math.atan2(d.y, d.x) / (Math.PI / 4)) % 8) + 8) % 8;
   const dir = DIRS[sector]!;
   // Project onto the direction, measured in grid steps along it.
@@ -255,7 +290,7 @@ function octilinearTarget(d: Point, maxLen: number): Point {
 }
 
 /** Round to integer grid cells; when two stations want the same cell, the busier one wins. */
-function snapToFreeCells(pos: Point[], adjacency: number[][]): Point[] {
+export function snapToFreeCells(pos: Point[], adjacency: number[][]): Point[] {
   const order = pos.map((_, i) => i).sort((a, b) => adjacency[b]!.length - adjacency[a]!.length);
   const taken = new Set<string>();
   const result: Point[] = new Array(pos.length);
@@ -396,7 +431,7 @@ function refine(
 }
 
 /** Grid path between two stations: straight when octilinear, otherwise one 45° bend. */
-function routeEdge(a: Point, b: Point, grid: Point[]): Point[] {
+export function routeEdge(a: Point, b: Point, grid: Point[]): Point[] {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   const adx = Math.abs(dx);
@@ -414,7 +449,7 @@ function routeEdge(a: Point, b: Point, grid: Point[]): Point[] {
 }
 
 /** Shift a polyline sideways by `offset`, positive to the left of travel direction (in screen space). */
-function offsetPolyline(points: Point[], offset: number): Point[] {
+export function offsetPolyline(points: Point[], offset: number): Point[] {
   if (offset === 0 || points.length < 2) return points.map((p) => ({ ...p }));
   const normals: Point[] = [];
   for (let i = 1; i < points.length; i++) {

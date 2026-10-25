@@ -56,11 +56,15 @@ const svg = renderSvg(map); // standalone SVG string
 
 ## How the layout works
 
+![Geography → relaxed → grid → metro map](docs/images/pipeline.svg)
+
 1. Fill in missing coordinates by interpolating along lines, then project lat/lon.
 2. Relax the network: every edge is pulled towards the nearest horizontal, vertical or 45° direction
    with a whole-number length, while stations repel each other and a fading pull keeps geography.
 3. Snap stations to a grid, then improve locally (fewer bends, crossings and stations on edges).
 4. Route each edge (straight, or with one 45° bend) and offset parallel lines into lanes.
+
+The full, illustrated explanation is in [docs/algorithm.md](docs/algorithm.md).
 
 ## Demo
 
@@ -70,6 +74,22 @@ A browser-only demo: pick a sample network or draw your own, press **Create metr
 npm run demo         # dev server
 npm run demo:build   # single self-contained file: dist-demo/index.html
 ```
+
+## Real-life metro maps
+
+For inspiration, some official and well-known maps of real metro systems:
+
+- [New York City Subway](https://www.mta.info/map/5256)
+- [London Underground](https://metroeasy.com/wp-content/uploads/2025/06/London-Underground-2025-scaled.jpg)
+- [Copenhagen Metro](https://metroeasy.com/wp-content/uploads/2025/09/Copenhagen-Metro-Map.jpg)
+- [Vienna U-Bahn](https://metroeasy.com/wp-content/uploads/2025/09/Vienna-U-Bahn-Map.jpg)
+- [Beijing Subway](https://www.metroman.cn/en/maps/beijing)
+- [Tokyo Metro](https://www.tokyometro.jp/en/subwaymap/index.html)
+- [Ho Chi Minh City Metro](https://hochiminhcitymetro.com/maps/)
+- [Mexico City Metro](https://mexicocity.cdmx.gob.mx/e/getting-around/the-metro-system-map/?lang=en)
+
+Overview: as of 16 May 2026, 214 cities in 63 countries operate 965 metro lines
+(see Wikipedia's [List of metro systems](https://en.wikipedia.org/wiki/List_of_metro_systems)).
 
 ## Development
 

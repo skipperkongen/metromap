@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 230" width="720" height="230" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+</defs>
+<rect width="720" height="230" rx="12" fill="#ffffff"/>
+<circle cx="60" cy="20" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="60" cy="110" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="60" cy="200" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="150" cy="20" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="150" cy="110" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="150" cy="200" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="240" cy="20" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="240" cy="110" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="240" cy="200" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="330" cy="20" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="330" cy="110" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<circle cx="330" cy="200" r="2" fill="#c9c9cc" stroke="none" stroke-width="1.8"/>
+<line x1="168" y1="123.5" x2="150" y2="110" stroke="#e5332a" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrow)"/>
+<circle cx="168" cy="123.5" r="5" fill="#fff" stroke="#8a8a8f" stroke-width="1.8" stroke-dasharray="3 2"/>
+<circle cx="150" cy="110" r="6" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="180" y="145.5" fill="#1d1d1f" font-size="12" text-anchor="start">3 connections</text>
+<line x1="132" y1="96.5" x2="60" y2="110" stroke="#e5332a" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrow)"/>
+<circle cx="132" cy="96.5" r="5" fill="#fff" stroke="#8a8a8f" stroke-width="1.8" stroke-dasharray="3 2"/>
+<circle cx="60" cy="110" r="6" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="120" y="86.5" fill="#1d1d1f" font-size="12" text-anchor="end">1 connection</text>
+<line x1="303" y1="141.5" x2="330" y2="110" stroke="#e5332a" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrow)"/>
+<circle cx="303" cy="141.5" r="5" fill="#fff" stroke="#8a8a8f" stroke-width="1.8" stroke-dasharray="3 2"/>
+<circle cx="330" cy="110" r="6" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="315" y="163.5" fill="#1d1d1f" font-size="12" text-anchor="start">2 connections</text>
+<circle cx="440" cy="64" r="5" fill="#fff" stroke="#8a8a8f" stroke-width="1.8" stroke-dasharray="3 2"/>
+<text x="454" y="68" fill="#8a8a8f" font-size="12" text-anchor="start">relaxed position</text>
+<circle cx="440" cy="90" r="6" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="454" y="94" fill="#8a8a8f" font-size="12" text-anchor="start">grid cell</text>
+<text x="440" y="130" fill="#1d1d1f" font-size="12" text-anchor="start">Two stations round to the same cell.</text>
+<text x="440" y="148" fill="#1d1d1f" font-size="12" text-anchor="start">The busier one keeps it; the other</text>
+<text x="440" y="166" fill="#1d1d1f" font-size="12" text-anchor="start">takes the nearest free cell.</text>
+</svg>

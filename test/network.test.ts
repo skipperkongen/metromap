@@ -44,6 +44,15 @@ describe("fillMissingCoordinates", () => {
     expect(filled[2]!.lon).toBeCloseTo(2);
   });
 
+  it("extends using the spacing between known stations that are not adjacent", () => {
+    const filled = fillMissingCoordinates({
+      stations: [{ name: "A", lat: 0, lon: 0 }, { name: "B" }, { name: "C", lat: 0, lon: 2 }, { name: "D" }],
+      lines: [{ name: "L", route: ["A", "B", "C", "D"] }],
+    });
+    expect(filled[3]!.lat).toBeCloseTo(0);
+    expect(filled[3]!.lon).toBeCloseTo(3);
+  });
+
   it("leaves stations no line can place without coordinates", () => {
     const filled = fillMissingCoordinates({ stations: [{ name: "A" }], lines: [] });
     expect(filled[0]!.lat).toBeUndefined();

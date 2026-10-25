@@ -28,7 +28,8 @@
     "test:watch": "vitest",
     "prepublishOnly": "npm run clean && npm run build",
     "demo": "vite",
-    "demo:build": "vite build"
+    "demo:build": "vite build",
+    "docs:figures": "npm run build && node scripts/figures.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
