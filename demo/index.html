@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Metromap Demo</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 17h6l6-10h6' fill='none' stroke='%23e5332a' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M3 7h6l6 10h6' fill='none' stroke='%230072bc' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M3 17h6l6-10h6" fill="none" stroke="#e5332a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 7h6l6 10h6" fill="none" stroke="#0072bc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>metromap</span>
+      </div>
+      <p class="tagline">Turn stations and lines into a metro map</p>
+      <button id="create" class="primary">Create metro map</button>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <section>
+          <label class="section-title" for="sample">Network</label>
+          <select id="sample">
+            <option value="copenhagen">Copenhagen Metro</option>
+            <option value="riverside">Riverside City (express line)</option>
+            <option value="empty">Empty – draw your own</option>
+          </select>
+        </section>
+
+        <section>
+          <div class="section-title">Tool</div>
+          <div class="segmented" role="radiogroup">
+            <button data-mode="stations" role="radio">Stations</button>
+            <button data-mode="lines" role="radio">Lines</button>
+          </div>
+          <p id="hint" class="hint"></p>
+          <div id="drawing-bar" class="drawing-bar" hidden>
+            <span id="drawing-label"></span>
+            <button id="finish-line">Finish line</button>
+          </div>
+        </section>
+
+        <section id="station-panel" hidden>
+          <div class="section-title">Selected station</div>
+          <div class="row">
+            <input id="station-name" type="text" aria-label="Station name" />
+            <button id="delete-station" class="danger" title="Delete station">Delete</button>
+          </div>
+          <p id="station-info" class="hint"></p>
+        </section>
+
+        <section class="lines-section">
+          <div class="section-title row-between">
+            <span>Lines</span>
+            <button id="new-line" class="small">+ New line</button>
+          </div>
+          <p class="hint">Click a station in a route to switch between <b>stops</b> (●) and <b>passes through</b> (○).</p>
+          <div id="lines"></div>
+        </section>
+
+        <details>
+          <summary>Network JSON</summary>
+          <textarea id="json" spellcheck="false" rows="10"></textarea>
+          <div class="row">
+            <button id="json-apply" class="small">Apply</button>
+            <span id="json-error" class="error"></span>
+          </div>
+        </details>
+      </aside>
+
+      <section class="pane">
+        <div class="pane-header">
+          <h2>Input</h2>
+          <span class="pane-note">Geography. Scroll to zoom, drag the background to pan.</span>
+        </div>
+        <svg id="input" class="canvas"></svg>
+      </section>
+
+      <section class="pane">
+        <div class="pane-header">
+          <h2>Metro map</h2>
+          <span id="map-status" class="pane-note"></span>
+          <button id="download" class="small" disabled>Download SVG</button>
+        </div>
+        <div id="stale" class="stale" hidden>
+          The input has changed since this map was made.
+          <button id="recreate" class="small">Update map</button>
+        </div>
+        <div id="map" class="canvas map" title="Scroll to zoom, drag to pan, double-click to reset"></div>
+      </section>
+    </main>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

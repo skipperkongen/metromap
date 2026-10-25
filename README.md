@@ -1,50 +1,106 @@
 # metromap
 Algorithm to layout and draw a network in the style typical of urban transit metro maps.
 
+Give it stations (optionally with lat/lon) and lines (ordered routes); get back an
+octilinear metro map in canvas coordinates, ready to draw.
+
 ## Install
 
-Using pip:
-
 ```shell
-pip install NAME_OF_PROJECT
-```
-
-Run tests:
-
-```
-# first create a virtual environment
-source .venv/bin/activate
-make lint
-make test
+npm install metromap
 ```
 
 ## Example
 
-```python
-TODO
+```ts
+import { layout, renderSvg } from "metromap";
+
+const map = layout({
+  stations: [
+    { name: "Northgate", lat: 0.04, lon: -0.03 },
+    { name: "Elm Park", lat: 0.03, lon: -0.022 },
+    { name: "Central", lat: 0.0, lon: 0.0 },
+    { name: "Market" }, // no coordinates: placed between its neighbours
+    { name: "Harbour", lat: -0.034, lon: 0.03 },
+  ],
+  lines: [
+    { name: "Local", color: "#e5332a", route: ["Northgate", "Elm Park", "Central", "Market", "Harbour"] },
+    {
+      name: "Express",
+      route: ["Northgate", { station: "Elm Park", stop: false }, "Central", { station: "Market", stop: false }, "Harbour"],
+    },
+  ],
+});
+
+const svg = renderSvg(map); // standalone SVG string
+```
+
+## Data model
+
+**Input** (`Network`)
+
+- `stations`: `{ name, lat?, lon? }`. Names are unique; lines refer to stations by name.
+- `lines`: `{ name, color?, route }`. `route` lists stations in travel order; each consecutive
+  pair is one segment. A plain string means the line stops there; `{ station, stop: false }`
+  means it passes through without stopping. Repeat the first station at the end for a loop.
+
+**Output** (`MetroMap`)
+
+- `stations`: `{ name, x, y }` in canvas coordinates.
+- `lines`: `{ name, color, segments, stations }`
+  - `segments`: `{ from, to, points }`, one per route pair, in travel direction. Points are final:
+    lines sharing track are already offset side by side.
+  - `stations`: `{ station, x, y, stop }`, where the line meets each station on its own lane, and
+    whether it stops there.
+- `width`, `height`: canvas size.
+
+## How the layout works
+
+1. Fill in missing coordinates by interpolating along lines, then project lat/lon.
+2. Relax the network: every edge is pulled towards the nearest horizontal, vertical or 45° direction
+   with a whole-number length, while stations repel each other and a fading pull keeps geography.
+3. Snap stations to a grid, then improve locally (fewer bends, crossings and stations on edges).
+4. Route each edge (straight, or with one 45° bend) and offset parallel lines into lanes.
+
+## Demo
+
+A browser-only demo: pick a sample network or draw your own, press **Create metro map**, recolor lines.
+
+```shell
+npm run demo         # dev server
+npm run demo:build   # single self-contained file: dist-demo/index.html
+```
+
+## Development
+
+```shell
+npm install
+npm run lint
+npm run typecheck
+npm test
+npm run build
 ```
 
 ## Publish new version
 
 > For developers
 
-You can publish the project to PyPI in two ways:
+You can publish the package to npm in two ways:
 
-1. Create release on Github, which automatically triggers publication to PyPI via Github Actions.
-2. Build locally and push to PyPI
+1. Create a release on GitHub, which automatically triggers publication to npm via GitHub Actions.
+2. Publish locally.
 
-### Method 1: Via Github Actions
+### Method 1: Via GitHub Actions
 
-- On Github, set secrets.PYPI_API_TOKEN
-- Update version number in pyproject.toml
+- On GitHub, set `secrets.NPM_TOKEN`
+- Update the version number (`npm version patch|minor|major`)
 - Merge to main (via PR, direct push to main or other way)
-- Create new release on Github
+- Create new release on GitHub
 
-### Method 2: Direct to PyPI
-
-Build and upload:
+### Method 2: Direct to npm
 
 ```shell
-python -m build
-twine upload dist/*
+npm publish
 ```
+
+`prepublishOnly` cleans and rebuilds `dist/` before publishing.
