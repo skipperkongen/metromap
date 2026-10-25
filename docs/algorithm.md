@@ -1,6 +1,7 @@
 # How the layout algorithm works
 
-This document explains how `layout()` turns stations and lines into a metro map.
+This document explains how the default algorithm, **relax & refine** (`relaxRefine`, also used
+by `layout()`), turns stations and lines into a metro map.
 It follows the code step by step, with the source location and the exact constants
 for each step.
 
@@ -26,10 +27,11 @@ npm run docs:figures
 8. [Step 6: Route edges](#step-6-route-edges)
 9. [Step 7: Lanes for shared track](#step-7-lanes-for-shared-track)
 10. [Step 8: Drawing (stations and labels)](#step-8-drawing-stations-and-labels)
-11. [Constants](#constants)
-12. [Performance](#performance)
-13. [Limitations](#limitations)
-14. [Related work](#related-work)
+11. [Adding an algorithm](#adding-an-algorithm)
+12. [Constants](#constants)
+13. [Performance](#performance)
+14. [Limitations](#limitations)
+15. [Related work](#related-work)
 
 ## The problem
 
@@ -52,19 +54,21 @@ optimal one.
 
 ## Overview
 
-`layout()` (`src/layout.ts`) runs eight steps. Steps 1–6 happen inside `computeStages()`,
-which returns every intermediate result. That is what the figures here are drawn from.
+The algorithm runs eight steps. Only steps 3 and 5 are specific to relax & refine. The
+others are shared by every grid-based algorithm (see
+[Adding an algorithm](#adding-an-algorithm)). `computeStages()` runs steps 1–6 and returns
+every intermediate result, which is what the figures here are drawn from.
 
-| Step | Function | What it produces |
-| --- | --- | --- |
-| 1. Prepare the input | `normalizeLines`, `fillMissingCoordinates`, `buildEdges` | validated lines, a lat/lon for every station, one edge per station pair |
-| 2. Project | `project` | positions in units of one typical station gap |
-| 3. Relax | `relax` | positions where edges point roughly in the 8 directions |
-| 4. Snap | `snapToFreeCells` | one whole-number grid cell per station |
-| 5. Local search | `refine` | grid positions with fewer bends, crossings and collisions |
-| 6. Route | `routeEdge` | each edge as a straight line, or with one 45° bend |
-| 7. Lanes | `offsetPolyline` (in `layout`) | per-line paths, offset side by side, in canvas pixels |
-| 8. Draw | `renderSvg` (`src/render.ts`) | an SVG with one dot per station, and labels |
+| Step | Function | Where | What it produces |
+| --- | --- | --- | --- |
+| 1. Prepare the input | `prepareNetwork` | shared: `src/pipeline.ts`, `src/network.ts` | validated lines, a lat/lon for every station, one edge per station pair |
+| 2. Project | `project` | shared: `src/pipeline.ts` | positions in units of one typical station gap |
+| 3. Relax | `relax` | `src/algorithms/relax-refine.ts` | positions where edges point roughly in the 8 directions |
+| 4. Snap | `snapToFreeCells` | shared: `src/pipeline.ts` | one whole-number grid cell per station |
+| 5. Local search | `refine` | `src/algorithms/relax-refine.ts` | grid positions with fewer bends, crossings and collisions |
+| 6. Route | `routeEdge` | shared: `src/pipeline.ts` | each edge as a straight line, or with one 45° bend |
+| 7. Lanes | `buildMetroMap`, `offsetPolyline` | shared: `src/pipeline.ts` | per-line paths, offset side by side, in canvas pixels |
+| 8. Draw | `renderSvg` | `src/render.ts` | an SVG with one dot per station, and labels |
 
 The core idea has two parts. Steps 2–3 are **continuous**: stations move freely, so the
 network can untangle smoothly from its geographic shape. Steps 4–5 are **discrete**: on
@@ -75,7 +79,7 @@ can be scored exactly.
 
 ### Validation and defaults
 
-`normalizeLines` (`src/network.ts`) does four things:
+`prepareNetwork` calls `normalizeLines` (`src/network.ts`), which does three things:
 
 - rejects duplicate station names, routes that refer to unknown stations, and the same
   station twice in a row
@@ -262,7 +266,7 @@ Finally, grid coordinates are converted to canvas pixels:
 
 ## Step 8: Drawing (stations and labels)
 
-`renderSvg` (`src/render.ts`) draws the `MetroMap` that `layout()` returns. It is
+`renderSvg` (`src/render.ts`) draws the `MetroMap` that any algorithm returns. It is
 separate from the layout, so you can draw the output any other way.
 
 ### Lines
@@ -306,16 +310,74 @@ map: a label sitting between two stations, where readers attach it to the wrong 
 
 ![The Copenhagen Metro, laid out by this algorithm](images/copenhagen.svg)
 
+## Adding an algorithm
+
+Every algorithm implements `LayoutAlgorithm` (`src/algorithm.ts`):
+
+```ts
+interface LayoutAlgorithm<O extends CanvasOptions = CanvasOptions> {
+  id: string;          // stable identifier, e.g. "relax-refine"
+  name: string;        // shown in the demo's picker
+  description: string; // one sentence
+  layout(network: Network, options?: O): MetroMap;
+}
+```
+
+Most algorithms only differ in **where they put the stations**. `defineGridAlgorithm` builds
+a complete algorithm from just that placement step. It reuses the shared pipeline:
+validation (step 1), edge routing (step 6), lanes and canvas scaling (step 7).
+
+```ts
+import { defineGridAlgorithm, project, snapToFreeCells } from "metromap";
+
+export const gridSnap = defineGridAlgorithm({
+  id: "grid-snap",
+  name: "Grid snap (baseline)",
+  description: "Rounds the geography to the nearest grid cells, with no further optimisation.",
+  // One whole-number grid point per station, in prepared.stations order.
+  place: (prepared) => snapToFreeCells(project(prepared.stations).map((p) => p ?? { x: 0, y: 0 }), prepared.adjacency),
+});
+```
+
+The `place` function receives a `PreparedNetwork`:
+
+- **`stations`**: lat/lon, with missing coordinates already estimated
+- **`edges`**: station indices `a` and `b`, plus the lines using each edge
+- **`adjacency`**: the edges touching each station
+- **`lines`**: the validated lines
+
+It must return grid positions that are whole numbers, one free cell per station, so edges
+can be routed octilinearly. An algorithm that routes edges itself can pass its own paths to
+`buildMetroMap`. One that doesn't fit the grid model at all can implement `layout`
+directly, as long as it returns a valid `MetroMap`.
+
+To make a new algorithm available everywhere:
+
+1. Add it to `ALGORITHMS` in `src/algorithms/index.ts`. It then appears in the demo's
+   *Algorithm* picker.
+2. The property tests in `test/layout.test.ts` run automatically for every registered
+   algorithm. They check that every station is kept, positions are unique, every leg is
+   0°/45°/90°, there is one segment per route pair, and everything stays inside the canvas.
+
+Two algorithms ship today:
+
+| Algorithm | Idea | Copenhagen |
+| --- | --- | --- |
+| `relaxRefine` (default) | everything in this document | ~70–100 ms |
+| `gridSnap` | project and round to the grid; steps 3 and 5 skipped | ~1 ms |
+
+The baseline is useful for comparison: it shows what the relaxation and local search add.
+
 ## Constants
 
 The constants were tuned by eye on the two sample networks.
 
 | Where | Constant | Value |
 | --- | --- | --- |
-| `LayoutOptions` | `spacing`: pixels per grid step | 64 |
+| `CanvasOptions` (all algorithms) | `spacing`: pixels per grid step | 64 |
 | | `laneWidth`: pixels between parallel lines | 8 |
 | | `padding`: canvas margin | 80 |
-| | `maxEdgeLength`: longest edge, in grid steps | 3 |
+| `RelaxRefineOptions` | `maxEdgeLength`: longest edge, in grid steps | 3 |
 | `relax` | iterations | 600 |
 | | step size: share of the averaged correction applied | 0.5 |
 | | minimum station distance | 1 unit |

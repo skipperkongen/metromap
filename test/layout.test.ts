@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { copenhagenMetro, layout, renderSvg, riversideCity, type MetroMap, type Network } from "../src/index.js";
+import {
+  ALGORITHMS,
+  copenhagenMetro,
+  defineGridAlgorithm,
+  layout,
+  renderSvg,
+  riversideCity,
+  type LayoutAlgorithm,
+  type MetroMap,
+  type Network,
+} from "../src/index.js";
 
 const SPACING = 50;
 
@@ -9,11 +19,16 @@ function allLegs(map: MetroMap) {
   );
 }
 
-describe.each([
-  ["Copenhagen", copenhagenMetro()],
-  ["Riverside", riversideCity()],
-])("layout of %s", (_name, network: Network) => {
-  const map = layout(network, { spacing: SPACING });
+// Properties every algorithm must have, checked for every registered algorithm and sample.
+const cases = ALGORITHMS.flatMap((algorithm) =>
+  [
+    ["Copenhagen", copenhagenMetro()],
+    ["Riverside", riversideCity()],
+  ].map(([name, network]) => [algorithm.id, name, algorithm, network] as [string, string, LayoutAlgorithm, Network]),
+);
+
+describe.each(cases)("%s on %s", (_id, _name, algorithm, network) => {
+  const map = algorithm.layout(network, { spacing: SPACING });
 
   it("keeps every station with its name", () => {
     expect(map.stations.map((s) => s.name).sort()).toEqual(network.stations.map((s) => s.name).sort());
@@ -101,9 +116,9 @@ describe("loops", () => {
   });
 });
 
-describe("networks without coordinates", () => {
-  it("still lays out every station", () => {
-    const map = layout({
+describe.each(ALGORITHMS.map((a) => [a.id, a] as const))("%s edge cases", (_id, algorithm) => {
+  it("lays out a network without coordinates", () => {
+    const map = algorithm.layout({
       stations: ["A", "B", "C", "D"].map((name) => ({ name })),
       lines: [{ name: "L", route: ["A", "B", "C", "D"] }],
     });
@@ -112,6 +127,35 @@ describe("networks without coordinates", () => {
   });
 
   it("handles an empty network", () => {
-    expect(layout({ stations: [], lines: [] }).stations).toEqual([]);
+    expect(algorithm.layout({ stations: [], lines: [] }).stations).toEqual([]);
+  });
+});
+
+describe("the algorithm registry", () => {
+  it("has unique ids and uses the default algorithm first", () => {
+    expect(new Set(ALGORITHMS.map((a) => a.id)).size).toBe(ALGORITHMS.length);
+    const net = riversideCity();
+    expect(ALGORITHMS[0]!.layout(net)).toEqual(layout(net));
+  });
+});
+
+describe("defineGridAlgorithm", () => {
+  it("turns a placement function into a complete algorithm", () => {
+    // Put every station in a row, in input order.
+    const row = defineGridAlgorithm({
+      id: "row",
+      name: "Row",
+      description: "Stations in a row.",
+      place: (prepared) => prepared.stations.map((_, i) => ({ x: i, y: 0 })),
+    });
+    const map = row.layout({
+      stations: [{ name: "A" }, { name: "B" }, { name: "C" }],
+      lines: [{ name: "L", route: ["A", "B", "C"] }],
+    });
+    expect(map.stations.map((s) => s.y)).toEqual([map.stations[0]!.y, map.stations[0]!.y, map.stations[0]!.y]);
+    expect(map.lines[0]!.segments.map((s) => [s.from, s.to])).toEqual([
+      ["A", "B"],
+      ["B", "C"],
+    ]);
   });
 });

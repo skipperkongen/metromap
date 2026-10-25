@@ -62,6 +62,22 @@ const svg = renderSvg(map); // standalone SVG string
 
 The full, illustrated explanation is in [docs/algorithm.md](docs/algorithm.md).
 
+## Algorithms
+
+`layout()` uses the default algorithm. Every algorithm implements the same `LayoutAlgorithm`
+interface, so you can pick one explicitly or write your own:
+
+```ts
+import { ALGORITHMS, gridSnap, relaxRefine } from "metromap";
+
+relaxRefine.layout(network); // the default: relax toward octilinear, snap, local search
+gridSnap.layout(network);    // baseline: round the geography to the grid
+ALGORITHMS;                  // every built-in algorithm, e.g. for a picker
+```
+
+To add one, define its station placement with `defineGridAlgorithm` and register it in
+`src/algorithms/index.ts`. See [Adding an algorithm](docs/algorithm.md#adding-an-algorithm).
+
 ## Demo
 
 A browser-only demo: pick a sample network or draw your own, press **Create metro map**, recolor lines.

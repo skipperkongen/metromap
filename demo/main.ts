@@ -1,7 +1,7 @@
 import {
+  ALGORITHMS,
   copenhagenMetro,
   fillMissingCoordinates,
-  layout,
   PALETTE,
   renderSvg,
   riversideCity,
@@ -52,6 +52,8 @@ const inputSvg = $<SVGSVGElement>("#input");
 const mapEl = $<HTMLDivElement>("#map");
 const linesEl = $<HTMLDivElement>("#lines");
 const sampleSelect = $<HTMLSelectElement>("#sample");
+const algorithmSelect = $<HTMLSelectElement>("#algorithm");
+const algorithmInfo = $<HTMLParagraphElement>("#algorithm-info");
 const hintEl = $<HTMLParagraphElement>("#hint");
 const drawingBar = $<HTMLDivElement>("#drawing-bar");
 const drawingLabel = $<HTMLSpanElement>("#drawing-label");
@@ -448,11 +450,12 @@ function createMap() {
     return;
   }
   try {
+    const algorithm = ALGORITHMS.find((a) => a.id === algorithmSelect.value) ?? ALGORITHMS[0]!;
     const t0 = performance.now();
-    state.map = layout(input);
+    state.map = algorithm.layout(input);
     const ms = Math.round(performance.now() - t0);
     state.stale = false;
-    mapStatus.textContent = `${input.stations.length} stations · ${input.lines.length} lines · ${ms} ms · scroll to zoom`;
+    mapStatus.textContent = `${algorithm.name} · ${input.stations.length} stations · ${ms} ms`;
     mapZoom = { k: 1, x: 0, y: 0 };
   } catch (err) {
     state.map = null;
@@ -618,6 +621,17 @@ document.querySelectorAll<HTMLButtonElement>(".segmented button").forEach((b) =>
     state.selected = null;
     render();
   });
+});
+
+for (const a of ALGORITHMS) algorithmSelect.add(new Option(a.name, a.id));
+const showAlgorithmInfo = () => {
+  algorithmInfo.textContent = ALGORITHMS.find((a) => a.id === algorithmSelect.value)?.description ?? "";
+};
+showAlgorithmInfo();
+algorithmSelect.addEventListener("change", () => {
+  showAlgorithmInfo();
+  // Redo an existing map right away so the algorithms are easy to compare.
+  if (state.map) createMap();
 });
 
 sampleSelect.addEventListener("change", () => {

@@ -4,14 +4,9 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import {
-  computeStages,
-  layout,
-  octilinearTarget,
-  offsetPolyline,
-  routeEdge,
-  snapToFreeCells,
-} from "../dist/layout.js";
+import { computeStages, octilinearTarget } from "../dist/algorithms/relax-refine.js";
+import { layout } from "../dist/layout.js";
+import { offsetPolyline, routeEdge, snapToFreeCells } from "../dist/pipeline.js";
 import { fillMissingCoordinates } from "../dist/network.js";
 import { renderSvg } from "../dist/render.js";
 import { copenhagenMetro } from "../dist/samples/copenhagen.js";
@@ -83,9 +78,9 @@ function drawNetwork(stages, positions, box, o = {}) {
       for (let gy = Math.ceil(map.min.y); gy <= map.max.y; gy++) out.push(dot(map({ x: gx, y: gy }), { r: 1.2, fill: C.faint, stroke: "none" }));
     }
   }
-  for (const e of stages.edges) {
-    const color = stages.lines[e.lines[0]].color;
-    const pts = o.paths ? o.paths[stages.edges.indexOf(e)].map(map) : [map(positions[e.a]), map(positions[e.b])];
+  for (const e of stages.prepared.edges) {
+    const color = stages.prepared.lines[e.lines[0]].color;
+    const pts = o.paths ? o.paths[stages.prepared.edges.indexOf(e)].map(map) : [map(positions[e.a]), map(positions[e.b])];
     out.push(poly(pts, { stroke: color, width: o.lineWidth ?? 3 }));
   }
   positions.forEach((p, i) => {
@@ -123,8 +118,8 @@ function meanAngleError(edges, pos) {
 }
 // The layout is deterministic, so a second run can measure convergence now that the edges are known.
 const angleError = [];
-computeStages(cph, 3, (_it, pos) => angleError.push(meanAngleError(stages.edges, pos)));
-const snappedError = meanAngleError(stages.edges, stages.snapped);
+computeStages(cph, 3, (_it, pos) => angleError.push(meanAngleError(stages.prepared.edges, pos)));
+const snappedError = meanAngleError(stages.prepared.edges, stages.snapped);
 const geoPositions = stages.geo.map((p) => p ?? { x: 0, y: 0 });
 
 // ---------- 1. Pipeline overview ----------
