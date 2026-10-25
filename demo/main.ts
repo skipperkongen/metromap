@@ -2,7 +2,6 @@ import {
   copenhagenMetro,
   fillMissingCoordinates,
   layout,
-  normalizeEntry,
   PALETTE,
   renderSvg,
   riversideCity,
@@ -13,15 +12,11 @@ import {
 
 // ---------- State ----------
 
-interface Entry {
-  station: string;
-  stop: boolean;
-}
-
 interface EditLine {
   name: string;
   color: string;
-  route: Entry[];
+  /** Station names in travel order. */
+  route: string[];
 }
 
 type Mode = "stations" | "lines";
@@ -76,7 +71,7 @@ function loadNetwork(net: Network) {
   state.lines = net.lines.map((l, i) => ({
     name: l.name,
     color: l.color ?? PALETTE[i % PALETTE.length]!,
-    route: l.route.map(normalizeEntry),
+    route: [...l.route],
   }));
   state.selected = null;
   state.drawing = null;
@@ -91,7 +86,7 @@ function currentNetwork(): Network {
     lines: state.lines.map((l) => ({
       name: l.name,
       color: l.color,
-      route: l.route.map((e) => (e.stop ? e.station : { station: e.station, stop: false })),
+      route: [...l.route],
     })),
   };
 }
@@ -99,7 +94,7 @@ function currentNetwork(): Network {
 /** The network that goes into the layout: only finished lines and the stations they use. */
 function layoutInput(): Network {
   const lines = currentNetwork().lines.filter((l) => l.route.length >= 2);
-  const used = new Set(lines.flatMap((l) => l.route.map((e) => normalizeEntry(e).station)));
+  const used = new Set(lines.flatMap((l) => l.route));
   return { stations: state.stations.filter((s) => used.has(s.name)), lines };
 }
 
@@ -183,7 +178,7 @@ function renderInput() {
   const pairKey = (a: string, b: string) => (a < b ? `${a}\u0000${b}` : `${b}\u0000${a}`);
   state.lines.forEach((line, li) => {
     for (let k = 1; k < line.route.length; k++) {
-      const key = pairKey(line.route[k - 1]!.station, line.route[k]!.station);
+      const key = pairKey(line.route[k - 1]!, line.route[k]!);
       const list = pairLines.get(key) ?? [];
       if (!list.includes(li)) list.push(li);
       pairLines.set(key, list);
@@ -194,8 +189,8 @@ function renderInput() {
   state.lines.forEach((line, li) => {
     const width = state.drawing === li ? 4.5 : 3;
     for (let k = 1; k < line.route.length; k++) {
-      const a = line.route[k - 1]!.station;
-      const b = line.route[k]!.station;
+      const a = line.route[k - 1]!;
+      const b = line.route[k]!;
       const pa = pos.get(a);
       const pb = pos.get(b);
       if (!pa || !pb) continue;
@@ -215,7 +210,7 @@ function renderInput() {
     const p = pos.get(s.name);
     if (!p) continue;
     const selected = state.selected === s.name;
-    const onLine = state.lines.some((l) => l.route.some((e) => e.station === s.name));
+    const onLine = state.lines.some((l) => l.route.includes(s.name));
     const r = selected ? 7 : 5;
     const stroke = selected ? "var(--accent)" : "var(--ink)";
     const dash = p.estimated ? ` stroke-dasharray="2 2"` : "";
@@ -248,7 +243,7 @@ function renderSidebar() {
   hintEl.innerHTML =
     state.mode === "stations"
       ? "Click empty space to <b>add a station</b>. Drag a station to move it, click it to rename or delete."
-      : "Click stations in order to <b>draw a line</b>; clicking empty space adds a new station. <b>Shift-click</b> adds a station the line passes without stopping. Click the first station to close a loop.";
+      : "Click stations in order to <b>draw a line</b>; clicking empty space adds a new station. Click the first station to close a loop.";
 
   const drawingLine = state.drawing !== null ? state.lines[state.drawing] : undefined;
   drawingBar.hidden = !drawingLine;
@@ -258,16 +253,9 @@ function renderSidebar() {
   stationPanel.hidden = !selected;
   if (selected) {
     if (document.activeElement !== stationName) stationName.value = selected.name;
-    const served = state.lines.filter((l) => l.route.some((e) => e.station === selected.name));
+    const served = state.lines.filter((l) => l.route.includes(selected.name));
     stationInfo.textContent =
-      served.length === 0
-        ? "Not on any line yet."
-        : served
-            .map((l) => {
-              const stops = l.route.some((e) => e.station === selected.name && e.stop);
-              return `${l.name}: ${stops ? "stops" : "passes through"}`;
-            })
-            .join(" · ");
+      served.length === 0 ? "Not on any line yet." : `Called at by ${served.map((l) => l.name).join(", ")}`;
   }
 
   linesEl.innerHTML = "";
@@ -320,21 +308,11 @@ function renderSidebar() {
     if (line.route.length === 0) {
       route.innerHTML = `<span class="route-empty">Click stations on the map to build the route.</span>`;
     }
-    line.route.forEach((entry, k) => {
-      const isLoopEnd = k === line.route.length - 1 && k > 1 && entry.station === line.route[0]!.station;
-      const chip = document.createElement("button");
-      chip.className = `chip${entry.stop ? "" : " pass"}`;
-      chip.title = entry.stop ? "Stops here. Click to pass through instead." : "Passes through. Click to stop here.";
-      chip.innerHTML = `<span class="dot" style="color:${line.color}">${entry.stop ? "●" : "○"}</span>${escText(entry.station)}${isLoopEnd ? " ↺" : ""}`;
-      chip.addEventListener("click", () => {
-        entry.stop = !entry.stop;
-        // The two ends of a loop are the same visit.
-        if (isLoopEnd) line.route[0]!.stop = entry.stop;
-        else if (k === 0 && line.route.length > 2 && line.route[line.route.length - 1]!.station === entry.station) {
-          line.route[line.route.length - 1]!.stop = entry.stop;
-        }
-        changed();
-      });
+    line.route.forEach((station, k) => {
+      const isLoopEnd = k === line.route.length - 1 && k > 1 && station === line.route[0];
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.innerHTML = `<span class="dot" style="color:${line.color}">●</span>${escText(station)}${isLoopEnd ? " ↺" : ""}`;
       route.append(chip);
     });
 
@@ -355,7 +333,7 @@ function renderSidebar() {
     if (line.route.length > 0) {
       const undo = document.createElement("button");
       undo.className = "small";
-      undo.textContent = "Remove last stop";
+      undo.textContent = "Remove last station";
       undo.addEventListener("click", () => {
         line.route.pop();
         changed();
@@ -506,17 +484,17 @@ function startLine(): number {
   return state.lines.length - 1;
 }
 
-function addToLine(station: string, stop: boolean) {
+function addToLine(station: string) {
   if (state.drawing === null) state.drawing = startLine();
   const line = state.lines[state.drawing]!;
   const last = line.route[line.route.length - 1];
-  if (last?.station === station) {
+  if (last === station) {
     // Clicking the last station again ends the line.
     finishDrawing();
     return;
   }
-  const closesLoop = line.route.length >= 3 && line.route[0]!.station === station;
-  line.route.push({ station, stop: closesLoop ? line.route[0]!.stop : stop });
+  const closesLoop = line.route.length >= 3 && line.route[0] === station;
+  line.route.push(station);
   if (closesLoop) finishDrawing();
 }
 
@@ -533,7 +511,7 @@ function renameStation(oldName: string, newName: string): boolean {
   const station = state.stations.find((s) => s.name === oldName);
   if (!station) return false;
   station.name = newName;
-  for (const line of state.lines) for (const e of line.route) if (e.station === oldName) e.station = newName;
+  for (const line of state.lines) line.route = line.route.map((name) => (name === oldName ? newName : name));
   if (state.selected === oldName) state.selected = newName;
   return true;
 }
@@ -541,9 +519,9 @@ function renameStation(oldName: string, newName: string): boolean {
 function deleteStation(name: string) {
   state.stations = state.stations.filter((s) => s.name !== name);
   for (const line of state.lines) {
-    line.route = line.route.filter((e) => e.station !== name);
+    line.route = line.route.filter((s) => s !== name);
     // Removing a station can leave the same station twice in a row.
-    line.route = line.route.filter((e, k) => k === 0 || e.station !== line.route[k - 1]!.station);
+    line.route = line.route.filter((s, k) => k === 0 || s !== line.route[k - 1]);
   }
   state.lines = state.lines.filter((l, i) => l.route.length >= 2 || i === state.drawing);
   if (state.selected === name) state.selected = null;
@@ -552,8 +530,8 @@ function deleteStation(name: string) {
 // ---------- Pointer interaction on the input pane ----------
 
 let gesture:
-  | { kind: "station"; name: string; start: { x: number; y: number }; moved: boolean; shift: boolean }
-  | { kind: "background"; start: { x: number; y: number }; view: View; moved: boolean; shift: boolean }
+  | { kind: "station"; name: string; start: { x: number; y: number }; moved: boolean }
+  | { kind: "background"; start: { x: number; y: number }; view: View; moved: boolean }
   | null = null;
 
 inputSvg.addEventListener("pointerdown", (ev) => {
@@ -562,8 +540,8 @@ inputSvg.addEventListener("pointerdown", (ev) => {
   const target = (ev.target as Element).closest("[data-station]");
   inputSvg.setPointerCapture(ev.pointerId);
   gesture = target
-    ? { kind: "station", name: target.getAttribute("data-station")!, start: p, moved: false, shift: ev.shiftKey }
-    : { kind: "background", start: p, view: { ...state.view }, moved: false, shift: ev.shiftKey };
+    ? { kind: "station", name: target.getAttribute("data-station")!, start: p, moved: false }
+    : { kind: "background", start: p, view: { ...state.view }, moved: false };
 });
 
 inputSvg.addEventListener("pointermove", (ev) => {
@@ -611,7 +589,7 @@ inputSvg.addEventListener("pointerup", (ev) => {
     }
   } else {
     const name = g.kind === "station" ? g.name : addStation(p.x, p.y);
-    addToLine(name, !g.shift);
+    addToLine(name);
     changed();
   }
 });

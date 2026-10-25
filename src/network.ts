@@ -1,4 +1,4 @@
-import type { Line, Network, RouteEntry, Station } from "./types.js";
+import type { Line, Network, Station } from "./types.js";
 
 export const PALETTE = [
   "#e5332a", // red
@@ -13,22 +13,11 @@ export const PALETTE = [
   "#2c3e50", // navy
 ];
 
-export interface Stop {
-  station: string;
-  stop: boolean;
-}
-
 export interface NormalizedLine {
   name: string;
   color: string;
   /** Route as written, including the repeated first station of a loop. */
-  route: Stop[];
-}
-
-export function normalizeEntry(entry: RouteEntry): Stop {
-  return typeof entry === "string"
-    ? { station: entry, stop: true }
-    : { station: entry.station, stop: entry.stop !== false };
+  route: string[];
 }
 
 /** Resolve defaults and check that the network is consistent. Throws on invalid input. */
@@ -39,15 +28,15 @@ export function normalizeLines(network: Network): NormalizedLine[] {
     names.add(s.name);
   }
   return network.lines.map((line: Line, i) => {
-    const route = line.route.map(normalizeEntry);
-    for (const { station } of route) {
+    const route = [...line.route];
+    for (const station of route) {
       if (!names.has(station)) {
         throw new Error(`Line "${line.name}" refers to unknown station "${station}"`);
       }
     }
     for (let k = 1; k < route.length; k++) {
-      if (route[k]!.station === route[k - 1]!.station) {
-        throw new Error(`Line "${line.name}" visits "${route[k]!.station}" twice in a row`);
+      if (route[k] === route[k - 1]) {
+        throw new Error(`Line "${line.name}" visits "${route[k]}" twice in a row`);
       }
     }
     return { name: line.name, color: line.color ?? PALETTE[i % PALETTE.length]!, route };
@@ -77,7 +66,7 @@ export function fillMissingCoordinates(network: Network): Station[] {
   };
 
   for (const line of network.lines) {
-    const route = line.route.map((e) => normalizeEntry(e).station);
+    const route = line.route;
     const anchors = route.flatMap((name, i) => (known.has(name) ? [i] : []));
     if (anchors.length === 0) continue;
     // A typical spacing, used to extend past the last known station.

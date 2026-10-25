@@ -35,7 +35,7 @@ describe.each([
 
   it("produces one segment per consecutive route pair, in travel direction", () => {
     network.lines.forEach((line, i) => {
-      const names = line.route.map((e) => (typeof e === "string" ? e : e.station));
+      const names = line.route;
       const segments = map.lines[i]!.segments;
       expect(segments.map((s) => [s.from, s.to])).toEqual(names.slice(1).map((to, k) => [names[k], to]));
     });
@@ -57,29 +57,47 @@ describe.each([
   });
 });
 
-describe("stops and pass-throughs", () => {
+describe("shared track", () => {
   const map = layout(riversideCity());
-  const express = map.lines.find((l) => l.name === "Red Express")!;
 
-  it("marks stations the express skips", () => {
-    const stops = Object.fromEntries(express.stations.map((s) => [s.station, s.stop]));
-    expect(stops).toMatchObject({ Northgate: true, "Elm Park": false, Central: true, Market: false, Harbour: true });
+  it("puts lines that share an edge in separate lanes", () => {
+    const seg = (name: string) => map.lines.find((l) => l.name === name)!.segments.find((s) => s.from === "University")!;
+    const red = seg("Red").points[0]!;
+    const green = seg("Green").points[0]!;
+    expect(Math.hypot(red.x - green.x, red.y - green.y)).toBeGreaterThan(4);
+  });
+});
+
+describe("station dots", () => {
+  const map = layout(riversideCity());
+  const svg = renderSvg(map, { legend: false });
+  const circles = [...svg.matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)" r="([\d.]+)"/g)].map((m) => ({
+    x: Number(m[1]),
+    y: Number(m[2]),
+    r: Number(m[3]),
+  }));
+  const at = (name: string) => {
+    const s = map.stations.find((st) => st.name === name)!;
+    return circles.filter((c) => Math.abs(c.x - s.x) < 0.1 && Math.abs(c.y - s.y) < 0.1);
+  };
+
+  it("draws exactly one dot per station", () => {
+    expect(circles).toHaveLength(map.stations.length);
+    for (const s of map.stations) expect(at(s.name), s.name).toHaveLength(1);
   });
 
-  it("puts the express in its own lane next to the local line", () => {
-    const local = map.lines.find((l) => l.name === "Red Local")!;
-    const e = express.stations.find((s) => s.station === "Elm Park")!;
-    const l = local.stations.find((s) => s.station === "Elm Park")!;
-    expect(Math.hypot(e.x - l.x, e.y - l.y)).toBeGreaterThan(4);
+  it("makes interchange dots larger than single-line dots", () => {
+    expect(at("Central")[0]!.r).toBeGreaterThan(at("Elm Park")[0]!.r);
   });
 });
 
 describe("loops", () => {
-  it("lists a loop's first station once", () => {
+  it("draws every segment of a loop, back to the start", () => {
     const map = layout(copenhagenMetro());
     const ring = map.lines.find((l) => l.name === "M3 Cityringen")!;
-    expect(ring.stations.filter((s) => s.station === "København H")).toHaveLength(1);
     expect(ring.segments).toHaveLength(17);
+    expect(ring.segments[0]!.from).toBe("København H");
+    expect(ring.segments[16]!.to).toBe("København H");
   });
 });
 

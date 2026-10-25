@@ -307,11 +307,6 @@ textarea {
   font-size: 11px;
 }
 
-.chip.pass {
-  color: var(--muted);
-  font-style: italic;
-}
-
 .route-empty {
   color: var(--muted);
   font-size: 12px;

@@ -22,13 +22,11 @@ const map = layout({
     { name: "Central", lat: 0.0, lon: 0.0 },
     { name: "Market" }, // no coordinates: placed between its neighbours
     { name: "Harbour", lat: -0.034, lon: 0.03 },
+    { name: "Airport", lat: -0.016, lon: 0.046 },
   ],
   lines: [
-    { name: "Local", color: "#e5332a", route: ["Northgate", "Elm Park", "Central", "Market", "Harbour"] },
-    {
-      name: "Express",
-      route: ["Northgate", { station: "Elm Park", stop: false }, "Central", { station: "Market", stop: false }, "Harbour"],
-    },
+    { name: "Red", color: "#e5332a", route: ["Northgate", "Elm Park", "Central", "Market", "Harbour"] },
+    { name: "Green", route: ["Elm Park", "Central", "Market", "Airport"] },
   ],
 });
 
@@ -40,18 +38,16 @@ const svg = renderSvg(map); // standalone SVG string
 **Input** (`Network`)
 
 - `stations`: `{ name, lat?, lon? }`. Names are unique; lines refer to stations by name.
-- `lines`: `{ name, color?, route }`. `route` lists stations in travel order; each consecutive
-  pair is one segment. A plain string means the line stops there; `{ station, stop: false }`
-  means it passes through without stopping. Repeat the first station at the end for a loop.
+- `lines`: `{ name, color?, route }`. `route` lists the names of the stations the line calls at,
+  in travel order; each consecutive pair is one segment. A line always calls at every station on
+  its route. Repeat the first station at the end for a loop.
 
 **Output** (`MetroMap`)
 
 - `stations`: `{ name, x, y }` in canvas coordinates.
-- `lines`: `{ name, color, segments, stations }`
+- `lines`: `{ name, color, segments }`
   - `segments`: `{ from, to, points }`, one per route pair, in travel direction. Points are final:
     lines sharing track are already offset side by side.
-  - `stations`: `{ station, x, y, stop }`, where the line meets each station on its own lane, and
-    whether it stops there.
 - `width`, `height`: canvas size.
 
 ## How the layout works

@@ -1,5 +1,5 @@
 import { fillMissingCoordinates, hasCoordinates, normalizeLines, type NormalizedLine } from "./network.js";
-import type { MapLine, MapLineStation, MapSegment, MapStation, MetroMap, Network, Point, Station } from "./types.js";
+import type { MapLine, MapSegment, MapStation, MetroMap, Network, Point, Station } from "./types.js";
 
 export interface LayoutOptions {
   /** Canvas distance between neighbouring grid points. Default 64. */
@@ -59,7 +59,7 @@ export function layout(network: Network, options: LayoutOptions = {}): MetroMap 
   const edgeByKey = new Map(edges.map((e, i) => [edgeKey(e.a, e.b), i]));
 
   const mapLines: MapLine[] = lines.map((line, li) => {
-    const route = line.route.map((r) => ({ ...r, i: index.get(r.station)! }));
+    const route = line.route.map((name) => ({ name, i: index.get(name)! }));
     const segments: MapSegment[] = [];
     for (let k = 1; k < route.length; k++) {
       const from = route[k - 1]!;
@@ -75,24 +75,10 @@ export function layout(network: Network, options: LayoutOptions = {}): MetroMap 
       pts = offsetPolyline(pts, offset);
       if (!refForward) pts = pts.reverse();
       if (from.i !== e.a) pts = pts.reverse();
-      segments.push({ from: from.station, to: to.station, points: pts });
+      segments.push({ from: from.name, to: to.name, points: pts });
     }
 
-    const isLoop = route.length > 2 && route[0]!.i === route[route.length - 1]!.i;
-    const visits = isLoop ? route.slice(0, -1) : route;
-    const lineStations: MapLineStation[] = visits.map((v, k) => {
-      const incoming = k > 0 ? segments[k - 1] : isLoop ? segments[segments.length - 1] : undefined;
-      const outgoing = segments[k];
-      const ends: Point[] = [];
-      if (incoming) ends.push(incoming.points[incoming.points.length - 1]!);
-      if (outgoing) ends.push(outgoing.points[0]!);
-      const at = ends.length > 0 ? average(ends) : mapStations[v.i]!;
-      // A loop stops at its start if either end of the route says so.
-      const stop = isLoop && k === 0 ? v.stop || route[route.length - 1]!.stop : v.stop;
-      return { station: v.station, x: at.x, y: at.y, stop };
-    });
-
-    return { name: line.name, color: line.color, segments, stations: lineStations };
+    return { name: line.name, color: line.color, segments };
   });
 
   const maxX = Math.max(...xs);
@@ -154,8 +140,8 @@ function buildEdges(lines: NormalizedLine[], index: Map<string, number>): Edge[]
   const edges = new Map<string, Edge>();
   lines.forEach((line, li) => {
     for (let k = 1; k < line.route.length; k++) {
-      const u = index.get(line.route[k - 1]!.station)!;
-      const v = index.get(line.route[k]!.station)!;
+      const u = index.get(line.route[k - 1]!)!;
+      const v = index.get(line.route[k]!)!;
       const a = Math.min(u, v);
       const b = Math.max(u, v);
       const key = `${a}|${b}`;
@@ -333,7 +319,7 @@ function refine(
   // For every station, the pairs of edges a line runs through consecutively.
   const turns: [number, number, number][][] = grid.map(() => []); // [station before, station, station after]
   for (const line of lines) {
-    const r = line.route.map((s) => index.get(s.station)!);
+    const r = line.route.map((name) => index.get(name)!);
     const loop = r.length > 2 && r[0] === r[r.length - 1];
     const visits = loop ? r.slice(0, -1) : r;
     for (let k = 0; k < visits.length; k++) {

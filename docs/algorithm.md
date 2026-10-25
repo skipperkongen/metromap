@@ -25,7 +25,7 @@ npm run docs:figures
 7. [Step 5: Local search](#step-5-local-search)
 8. [Step 6: Route edges](#step-6-route-edges)
 9. [Step 7: Lanes for shared track](#step-7-lanes-for-shared-track)
-10. [Step 8: Drawing (stops and labels)](#step-8-drawing-stops-and-labels)
+10. [Step 8: Drawing (stations and labels)](#step-8-drawing-stations-and-labels)
 11. [Constants](#constants)
 12. [Performance](#performance)
 13. [Limitations](#limitations)
@@ -64,7 +64,7 @@ which returns every intermediate result. That is what the figures here are drawn
 | 5. Local search | `refine` | grid positions with fewer bends, crossings and collisions |
 | 6. Route | `routeEdge` | each edge as a straight line, or with one 45° bend |
 | 7. Lanes | `offsetPolyline` (in `layout`) | per-line paths, offset side by side, in canvas pixels |
-| 8. Draw | `renderSvg` (`src/render.ts`) | an SVG with stop dots, interchanges and labels |
+| 8. Draw | `renderSvg` (`src/render.ts`) | an SVG with one dot per station, and labels |
 
 The core idea has two parts. Steps 2–3 are **continuous**: stations move freely, so the
 network can untangle smoothly from its geographic shape. Steps 4–5 are **discrete**: on
@@ -77,7 +77,6 @@ can be scored exactly.
 
 `normalizeLines` (`src/network.ts`) does four things:
 
-- turns plain route entries like `"Central"` into `{ station: "Central", stop: true }`
 - rejects duplicate station names, routes that refer to unknown stations, and the same
   station twice in a row
 - gives every line without a colour one from the palette
@@ -92,7 +91,7 @@ lines they're on:
 - **Between two known stations:** interpolate evenly. Two unknown stations between A
   and D land at t = 1/3 and t = 2/3.
 - **Past the last known station:** extend in the direction of the route's last two
-  known stations, by the line's average spacing per stop.
+  known stations, by the line's average spacing per station.
 - **On several lines:** average the estimate from each line.
 
 ![Interpolating and extending missing coordinates along a line](images/missing-coordinates.svg)
@@ -251,17 +250,17 @@ lane order the same along a corridor, even when lines travel it in opposite dire
 At bends, `offsetPolyline` uses **miter joins**, so parallel lanes stay exactly one lane
 apart through the corner.
 
-![Lanes on a shared edge, and a line changing lane where lines split](images/lanes.svg)
+![Lanes on a shared edge, and one station dot covering the lanes where lines split](images/lanes.svg)
 
 A line's lane can change at a station, for example where two lines split. Its incoming
 segment then ends at a slightly different point than its outgoing segment starts. The
-line's position at that station, which is where its stop dot goes, is the **average**
-of those two points.
+small jog between them is hidden under the station's dot, which is sized to cover every
+lane (see step 8).
 
 Finally, grid coordinates are converted to canvas pixels:
 `x = (gridX − minX) × spacing + padding`, and the same for y.
 
-## Step 8: Drawing (stops and labels)
+## Step 8: Drawing (stations and labels)
 
 `renderSvg` (`src/render.ts`) draws the `MetroMap` that `layout()` returns. It is
 separate from the layout, so you can draw the output any other way.
@@ -271,16 +270,18 @@ separate from the layout, so you can draw the output any other way.
 Each line is one continuous path through all its segments. Corners are rounded with a
 quadratic curve, radius 14 px by default.
 
-### Stops and pass-throughs
+### Stations
 
-![Stop symbols: dots, interchange connectors, pass-throughs](images/stops.svg)
+Every line calls at every station on its route, so each station gets **exactly one dot**,
+at its centre:
 
-| Symbol | Meaning |
-| --- | --- |
-| White dot on a line | that line stops here |
-| Dots joined by a white capsule | interchange: several lines stop here |
-| A line with no dot | that line passes through without stopping ("Local stop" for the Express) |
-| A small gap in the line, grey italic label | no line stops here ("Nobody stops") |
+- **One line:** a small white dot on the line, radius `stationRadius` (3.2 px).
+- **Two or more lines (interchange):** a larger white dot with a heavier outline. Its
+  radius is the distance from the centre to the farthest lane end, plus half a line width,
+  plus 1 px, and at least 1.6 × `stationRadius`. That way it covers every lane passing
+  through, including the jogs where lines change lane.
+
+![Station dots: single line, shared track, crossing lines](images/stations.svg)
 
 ### Labels
 
@@ -322,7 +323,7 @@ The constants were tuned by eye on the two sample networks.
 | | initial anchor weight, fading linearly to 0 | 0.3 |
 | `refine` | maximum passes | 8 |
 | | costs | see [Step 5](#step-5-local-search) |
-| `RenderOptions` | `lineWidth` / `stopRadius` / `cornerRadius` / `fontSize` | 6 / 3.2 / 14 / 12 |
+| `RenderOptions` | `lineWidth` / `stationRadius` / `cornerRadius` / `fontSize` | 6 / 3.2 / 14 / 12 |
 
 ## Performance
 

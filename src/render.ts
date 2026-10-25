@@ -3,8 +3,8 @@ import type { MetroMap, Point } from "./types.js";
 export interface RenderOptions {
   /** Stroke width of a line. Default 6. */
   lineWidth?: number;
-  /** Radius of a stop dot. Default 3.2. */
-  stopRadius?: number;
+  /** Radius of a station dot on a single line; interchange dots are larger. Default 3.2. */
+  stationRadius?: number;
   /** Corner radius where a line bends. Default 14. */
   cornerRadius?: number;
   fontSize?: number;
@@ -26,7 +26,7 @@ interface Box {
 /** Render a metro map as a standalone SVG string. */
 export function renderSvg(map: MetroMap, options: RenderOptions = {}): string {
   const lineWidth = options.lineWidth ?? 6;
-  const stopRadius = options.stopRadius ?? 3.2;
+  const stationRadius = options.stationRadius ?? 3.2;
   const cornerRadius = options.cornerRadius ?? 14;
   const fontSize = options.fontSize ?? 12;
   const fontFamily = options.fontFamily ?? "'Helvetica Neue', Helvetica, Arial, sans-serif";
@@ -53,53 +53,42 @@ export function renderSvg(map: MetroMap, options: RenderOptions = {}): string {
     );
   }
 
-  // Stops: a dot on every line that stops; a connector when several lines stop.
-  const stopsByStation = new Map<string, Point[]>();
+  // Stations: one dot each. Where several lines call, the dot grows to cover all their lanes.
+  const lanePoints = new Map<string, Point[]>();
+  const linesAt = new Map<string, Set<string>>();
   for (const line of map.lines) {
-    for (const s of line.stations) {
-      if (!s.stop) continue;
-      const list = stopsByStation.get(s.station) ?? [];
-      if (!list.some((p) => Math.hypot(p.x - s.x, p.y - s.y) < 0.5)) list.push({ x: s.x, y: s.y });
-      stopsByStation.set(s.station, list);
-    }
-  }
-  for (const [, dots] of stopsByStation) {
-    if (dots.length > 1) {
-      const chain = orderAlongAxis(dots);
-      const d = chain.map((p, i) => `${i === 0 ? "M" : "L"}${fmt(p.x)} ${fmt(p.y)}`).join(" ");
-      out.push(`<path d="${d}" fill="none" stroke="${ink}" stroke-width="${2 * stopRadius + 5}" stroke-linecap="round" stroke-linejoin="round"/>`);
-      out.push(`<path d="${d}" fill="none" stroke="#fff" stroke-width="${2 * stopRadius + 2}" stroke-linecap="round" stroke-linejoin="round"/>`);
-    }
-    for (const p of dots) {
-      out.push(`<circle cx="${fmt(p.x)}" cy="${fmt(p.y)}" r="${stopRadius}" fill="#fff" stroke="${ink}" stroke-width="1.6"/>`);
-    }
-  }
-
-  // Stations every line passes without stopping: a small gap in the line, so the station is still visible.
-  for (const station of map.stations) {
-    if (stopsByStation.has(station.name)) continue;
-    for (const line of map.lines) {
-      for (const s of line.stations) {
-        if (s.station !== station.name) continue;
-        out.push(`<circle cx="${fmt(s.x)}" cy="${fmt(s.y)}" r="${fmt(lineWidth * 0.3)}" fill="${background}"/>`);
+    for (const seg of line.segments) {
+      const ends: [string, Point][] = [
+        [seg.from, seg.points[0]!],
+        [seg.to, seg.points[seg.points.length - 1]!],
+      ];
+      for (const [name, p] of ends) {
+        lanePoints.set(name, [...(lanePoints.get(name) ?? []), p]);
+        linesAt.set(name, (linesAt.get(name) ?? new Set()).add(line.name));
       }
     }
+  }
+  const dots = new Map<string, number>(); // station name → dot radius
+  for (const station of map.stations) {
+    const lines = linesAt.get(station.name)?.size ?? 0;
+    const spread = Math.max(0, ...(lanePoints.get(station.name) ?? []).map((p) => Math.hypot(p.x - station.x, p.y - station.y)));
+    const r = lines > 1 ? Math.max(stationRadius * 1.6, spread + lineWidth / 2 + 1) : stationRadius;
+    dots.set(station.name, r);
+    out.push(
+      `<circle cx="${fmt(station.x)}" cy="${fmt(station.y)}" r="${fmt(r)}" fill="#fff" stroke="${ink}" stroke-width="${lines > 1 ? 2 : 1.6}"/>`,
+    );
   }
 
   // Labels, placed greedily where they collide least with lines and other labels.
   const placed: Box[] = [];
-  // Every place a line meets a station, stopping or not.
-  const dotBoxes: Box[] = map.lines.flatMap((l) =>
-    l.stations.map((p) => ({ x: p.x - stopRadius, y: p.y - stopRadius, w: 2 * stopRadius, h: 2 * stopRadius })),
-  );
-  const linesAt = (name: string) => map.lines.filter((l) => l.stations.some((s) => s.station === name)).length;
-  const order = [...map.stations].sort((a, b) => linesAt(b.name) - linesAt(a.name));
+  const dotBoxes: Box[] = map.stations.map((st) => {
+    const r = dots.get(st.name)!;
+    return { x: st.x - r, y: st.y - r, w: 2 * r, h: 2 * r };
+  });
+  const order = [...map.stations].sort((a, b) => (linesAt.get(b.name)?.size ?? 0) - (linesAt.get(a.name)?.size ?? 0));
   const labels: string[] = [];
   for (const station of order) {
-    const dots = stopsByStation.get(station.name) ?? [];
-    const lanePts = map.lines.flatMap((l) => l.stations.filter((s) => s.station === station.name));
-    const spread = Math.max(0, ...lanePts.map((p) => Math.hypot(p.x - station.x, p.y - station.y)));
-    const gap = spread + stopRadius + 5;
+    const gap = dots.get(station.name)! + 5;
     const w = textWidth(station.name, fontSize);
     const h = fontSize * 1.2;
 
@@ -130,9 +119,8 @@ export function renderSvg(map: MetroMap, options: RenderOptions = {}): string {
     const chosen = best as { box: Box; anchor: string; tx: number; ty: number } | null;
     if (!chosen) continue;
     placed.push(chosen.box);
-    const muted = dots.length === 0 ? ` fill-opacity="0.55" font-style="italic"` : "";
     labels.push(
-      `<text x="${fmt(chosen.tx)}" y="${fmt(chosen.ty)}" text-anchor="${chosen.anchor}"${muted}>${esc(station.name)}</text>`,
+      `<text x="${fmt(chosen.tx)}" y="${fmt(chosen.ty)}" text-anchor="${chosen.anchor}">${esc(station.name)}</text>`,
     );
   }
   out.push(
@@ -202,15 +190,6 @@ function roundedPath(pts: Point[], radius: number): string {
   }
   const last = pts[pts.length - 1]!;
   return `${d} L${fmt(last.x)} ${fmt(last.y)}`;
-}
-
-/** Order points along their main axis so a connector runs through them without zig-zagging. */
-function orderAlongAxis(points: Point[]): Point[] {
-  const xs = points.map((p) => p.x);
-  const ys = points.map((p) => p.y);
-  const spanX = Math.max(...xs) - Math.min(...xs);
-  const spanY = Math.max(...ys) - Math.min(...ys);
-  return [...points].sort((a, b) => (spanX >= spanY ? a.x - b.x || a.y - b.y : a.y - b.y || a.x - b.x));
 }
 
 function textWidth(text: string, fontSize: number): number {

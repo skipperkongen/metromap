@@ -1,14 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { fillMissingCoordinates, normalizeEntry } from "../src/index.js";
+import { fillMissingCoordinates } from "../src/index.js";
 import { normalizeLines } from "../src/network.js";
-
-describe("normalizeEntry", () => {
-  it("treats a plain station name as a stop", () => {
-    expect(normalizeEntry("A")).toEqual({ station: "A", stop: true });
-    expect(normalizeEntry({ station: "A" })).toEqual({ station: "A", stop: true });
-    expect(normalizeEntry({ station: "A", stop: false })).toEqual({ station: "A", stop: false });
-  });
-});
 
 describe("normalizeLines", () => {
   const stations = [{ name: "A" }, { name: "B" }];

@@ -444,37 +444,35 @@ const geoPositions = stages.geo.map((p) => p ?? { x: 0, y: 0 });
   const outA = offsetPolyline([st, { x: ox + 270, y: 140 }], 0);
   const outB = offsetPolyline([st, { x: ox + 250, y: 240 }], 0);
   body.push(text(ox + 10, 28, "Lines split at a station", { weight: 600 }));
-  body.push(text(ox + 10, 45, "a line can change lane; its dot goes between the two ends", { fill: C.muted, size: 12 }));
+  body.push(text(ox + 10, 45, "one station dot, sized to cover every lane", { fill: C.muted, size: 12 }));
   body.push(poly([...inA, ...outA], { stroke: C.blue, width: 7 }));
   body.push(poly([...inB, ...outB], { stroke: C.amber, width: 7 }));
-  const dotB = { x: (inB[1].x + outB[0].x) / 2, y: (inB[1].y + outB[0].y) / 2 };
-  const dotA = { x: (inA[1].x + outA[0].x) / 2, y: (inA[1].y + outA[0].y) / 2 };
-  body.push(`<path d="M${f(dotA.x)} ${f(dotA.y)}L${f(dotB.x)} ${f(dotB.y)}" stroke="${C.ink}" stroke-width="11.4" stroke-linecap="round"/>`);
-  body.push(`<path d="M${f(dotA.x)} ${f(dotA.y)}L${f(dotB.x)} ${f(dotB.y)}" stroke="#fff" stroke-width="8.4" stroke-linecap="round"/>`);
-  body.push(dot(dotA, { r: 3.2, width: 1.6 }), dot(dotB, { r: 3.2, width: 1.6 }));
+  // Same sizing rule as renderSvg: lane spread + half a line width + 1.
+  const spread = Math.max(...[inA[1], inB[1], outA[0], outB[0]].map((p) => Math.hypot(p.x - st.x, p.y - st.y)));
+  body.push(dot(st, { r: Math.max(3.2 * 1.6, spread + 7 / 2 + 1), width: 2 }));
   write("lanes.svg", svg(720, 260, body.join("\n")));
 }
 
-// ---------- 10. Stop symbols (rendered by renderSvg) ----------
+// ---------- 10. Station dots (rendered by renderSvg) ----------
 {
   const net = {
     stations: [
-      { name: "Interchange", lat: 0, lon: 0 },
-      { name: "Local stop", lat: 0, lon: 0.01 },
-      { name: "Both stop", lat: 0, lon: 0.02 },
-      { name: "Nobody stops", lat: 0, lon: 0.03 },
-      { name: "Terminus", lat: 0, lon: 0.04 },
+      { name: "Terminus", lat: 0.01, lon: 0 },
+      { name: "Single line", lat: 0.01, lon: 0.01 },
+      { name: "Shared track", lat: 0.01, lon: 0.02 },
+      { name: "Lines cross", lat: 0.01, lon: 0.03 },
+      { name: "End", lat: 0.01, lon: 0.04 },
+      { name: "North", lat: 0.02, lon: 0.03 },
+      { name: "South", lat: 0, lon: 0.03 },
+      { name: "Branch", lat: 0, lon: 0.02 },
     ],
     lines: [
-      { name: "Local", color: C.accent, route: ["Interchange", "Local stop", "Both stop", { station: "Nobody stops", stop: false }, "Terminus"] },
-      {
-        name: "Express",
-        color: C.purple,
-        route: ["Interchange", { station: "Local stop", stop: false }, "Both stop", { station: "Nobody stops", stop: false }, "Terminus"],
-      },
+      { name: "Red", color: C.accent, route: ["Terminus", "Single line", "Shared track", "Lines cross", "End"] },
+      { name: "Purple", color: C.purple, route: ["Branch", "Shared track", "Lines cross", "End"] },
+      { name: "Blue", color: C.blue, route: ["North", "Lines cross", "South"] },
     ],
   };
-  write("stops.svg", renderSvg(layout(net, { spacing: 110, padding: 70 }), { fontSize: 13 }));
+  write("stations.svg", renderSvg(layout(net, { spacing: 100, padding: 70 }), { fontSize: 13 }));
 }
 
 // ---------- 11. Label candidates ----------

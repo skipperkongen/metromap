@@ -1,9 +1,9 @@
 import type { Network } from "../types.js";
 
 /**
- * A made-up city with a local line, an express line that skips stations on
- * the same track, and a crosstown line. Two stations have no coordinates and
- * are placed between their neighbours.
+ * A made-up city with a north–south line, a crosstown line, and a line that
+ * shares the north–south track through the center before branching off.
+ * Two stations have no coordinates and are placed between their neighbours.
  */
 export function riversideCity(): Network {
   return {
@@ -22,27 +22,19 @@ export function riversideCity(): Network {
       { name: "Old Town", lat: 0.006, lon: 0.012 },
       { name: "Stadium" },
       { name: "Eastfield", lat: 0.012, lon: 0.042 },
+      { name: "Fairground", lat: -0.01, lon: 0.03 },
+      { name: "Airport", lat: -0.016, lon: 0.046 },
     ],
     lines: [
       {
-        name: "Red Local",
+        name: "Red",
         color: "#e5332a",
         route: ["Northgate", "Elm Park", "Hill Road", "University", "Central", "Market", "Riverside", "Docks", "Harbour"],
       },
       {
-        name: "Red Express",
-        color: "#8e44ad",
-        route: [
-          "Northgate",
-          { station: "Elm Park", stop: false },
-          { station: "Hill Road", stop: false },
-          "University",
-          "Central",
-          { station: "Market", stop: false },
-          "Riverside",
-          { station: "Docks", stop: false },
-          "Harbour",
-        ],
+        name: "Green",
+        color: "#00a651",
+        route: ["Hill Road", "University", "Central", "Market", "Fairground", "Airport"],
       },
       {
         name: "Crosstown",
