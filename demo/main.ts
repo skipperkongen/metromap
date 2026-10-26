@@ -65,6 +65,7 @@ const mapStatus = $<HTMLSpanElement>("#map-status");
 const downloadBtn = $<HTMLButtonElement>("#download");
 const jsonEl = $<HTMLTextAreaElement>("#json");
 const jsonError = $<HTMLSpanElement>("#json-error");
+const createButtons = [$<HTMLButtonElement>("#create"), $<HTMLButtonElement>("#recreate")];
 
 // ---------- Network helpers ----------
 
@@ -449,20 +450,26 @@ function createMap() {
     render();
     return;
   }
-  try {
-    const algorithm = ALGORITHMS.find((a) => a.id === algorithmSelect.value) ?? ALGORITHMS[0]!;
-    const t0 = performance.now();
-    state.map = algorithm.layout(input);
-    const ms = Math.round(performance.now() - t0);
-    state.stale = false;
-    mapStatus.textContent = `${algorithm.name} · ${input.stations.length} stations · ${ms} ms`;
-    mapZoom = { k: 1, x: 0, y: 0 };
-  } catch (err) {
-    state.map = null;
-    mapStatus.textContent = "";
-    mapEl.innerHTML = `<p class="placeholder error">${escText(String((err as Error).message ?? err))}</p>`;
-  }
-  render();
+  const algorithm = ALGORITHMS.find((a) => a.id === algorithmSelect.value) ?? ALGORITHMS[0]!;
+  // Some algorithms take a second; show that before the browser is busy.
+  mapStatus.textContent = `${algorithm.name}: laying out…`;
+  createButtons.forEach((b) => (b.disabled = true));
+  setTimeout(() => {
+    try {
+      const t0 = performance.now();
+      state.map = algorithm.layout(input);
+      const ms = Math.round(performance.now() - t0);
+      state.stale = false;
+      mapStatus.textContent = `${algorithm.name} · ${input.stations.length} stations · ${ms} ms`;
+      mapZoom = { k: 1, x: 0, y: 0 };
+    } catch (err) {
+      state.map = null;
+      mapStatus.textContent = "";
+      mapEl.innerHTML = `<p class="placeholder error">${escText(String((err as Error).message ?? err))}</p>`;
+    }
+    createButtons.forEach((b) => (b.disabled = false));
+    render();
+  }, 30);
 }
 
 function render() {

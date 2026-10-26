@@ -68,15 +68,20 @@ The full, illustrated explanation is in [docs/algorithm.md](docs/algorithm.md).
 interface, so you can pick one explicitly or write your own:
 
 ```ts
-import { ALGORITHMS, gridSnap, relaxRefine } from "metromap";
+import { ALGORITHMS, gridSnap, relaxRefine, shapeAware } from "metromap";
 
 relaxRefine.layout(network); // the default: relax toward octilinear, snap, local search
+shapeAware.layout(network);  // slower, nicer: no zig-zags, convex 45° rings, even rhythm
 gridSnap.layout(network);    // baseline: round the geography to the grid
 ALGORITHMS;                  // every built-in algorithm, e.g. for a picker
 ```
 
 To add one, define its station placement with `defineGridAlgorithm` and register it in
 `src/algorithms/index.ts`. See [Adding an algorithm](docs/algorithm.md#adding-an-algorithm).
+
+What makes a layout look good is formalised as a weighted cost function, `evaluate`, that can
+score any layout: zig-zags, convex ring shapes, even rhythm, label room and more. See
+[docs/aesthetics.md](docs/aesthetics.md).
 
 ## Demo
 

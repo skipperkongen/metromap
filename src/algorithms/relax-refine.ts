@@ -26,7 +26,7 @@ export const relaxRefine = defineGridAlgorithm<RelaxRefineOptions>({
   id: "relax-refine",
   name: "Relax & refine",
   description: "Force-directed relaxation toward octilinear edges, then grid snapping and local search.",
-  place: (prepared, options) => placeStages(prepared, options.maxEdgeLength ?? 3).grid,
+  place: (prepared, options) => relaxRefineStages(prepared, options.maxEdgeLength ?? 3).grid,
 });
 
 export interface Stages {
@@ -49,10 +49,11 @@ export function computeStages(
   maxLen = 3,
   onRelaxStep?: (iteration: number, pos: Point[]) => void,
 ): Stages {
-  return placeStages(prepareNetwork(network), maxLen, onRelaxStep);
+  return relaxRefineStages(prepareNetwork(network), maxLen, onRelaxStep);
 }
 
-function placeStages(
+/** Relax & refine's placement, with every intermediate result. Other algorithms can start from its grid. */
+export function relaxRefineStages(
   prepared: PreparedNetwork,
   maxLen: number,
   onRelaxStep?: (iteration: number, pos: Point[]) => void,

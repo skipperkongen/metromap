@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" height="440" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+</defs>
+<rect width="800" height="440" rx="12" fill="#ffffff"/>
+<text x="20" y="28" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Convex arcs between two fixed stations (590 in total; 8 shown)</text>
+<rect x="20" y="50" width="175" height="175" rx="8" fill="none" stroke="#e8e8e5"/>
+<polyline points="38,162.3 107.5,162.3 177,92.8" fill="none" stroke="#e5332a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="38" cy="162.3" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="177" cy="92.8" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="28" y="218" fill="#8a8a8f" font-size="11" text-anchor="start">2 legs</text>
+<rect x="210" y="50" width="175" height="175" rx="8" fill="none" stroke="#e8e8e5"/>
+<polyline points="228,162.3 367,162.3 367,92.8" fill="none" stroke="#e5332a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="228" cy="162.3" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="367" cy="92.8" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="218" y="218" fill="#8a8a8f" font-size="11" text-anchor="start">2 legs</text>
+<rect x="400" y="50" width="175" height="175" rx="8" fill="none" stroke="#e8e8e5"/>
+<polyline points="418,162.3 533.8,162.3 557,139.1 557,92.8" fill="none" stroke="#e5332a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="418" cy="162.3" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="557" cy="92.8" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="408" y="218" fill="#8a8a8f" font-size="11" text-anchor="start">3 legs</text>
+<rect x="590" y="50" width="175" height="175" rx="8" fill="none" stroke="#e8e8e5"/>
+<polyline points="608,162.3 700.7,162.3 747,115.9 747,92.8" fill="none" stroke="#e5332a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="608" cy="162.3" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="747" cy="92.8" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="598" y="218" fill="#8a8a8f" font-size="11" text-anchor="start">3 legs</text>
+<rect x="20" y="240" width="175" height="175" rx="8" fill="none" stroke="#e8e8e5"/>
+<polyline points="38,347.3 157.1,347.3 177,327.4 177,307.6 157.1,287.7" fill="none" stroke="#e5332a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="38" cy="347.3" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="157.1" cy="287.7" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="28" y="408" fill="#8a8a8f" font-size="11" text-anchor="start">4 legs</text>
+<rect x="210" y="240" width="175" height="175" rx="8" fill="none" stroke="#e8e8e5"/>
+<polyline points="228,340.7 351.6,340.7 367,325.2 336.1,294.3 320.7,294.3" fill="none" stroke="#e5332a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="228" cy="340.7" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="320.7" cy="294.3" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="218" y="408" fill="#8a8a8f" font-size="11" text-anchor="start">4 legs</text>
+<rect x="400" y="240" width="175" height="175" rx="8" fill="none" stroke="#e8e8e5"/>
+<polyline points="418,343.6 539.6,343.6 557,326.2 557,308.8 539.6,291.4 522.3,291.4" fill="none" stroke="#e5332a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="418" cy="343.6" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="522.3" cy="291.4" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="408" y="408" fill="#8a8a8f" font-size="11" text-anchor="start">5 legs</text>
+<rect x="590" y="240" width="175" height="175" rx="8" fill="none" stroke="#e8e8e5"/>
+<polyline points="608,340.7 731.6,340.7 747,325.2 747,309.8 731.6,294.3 700.7,294.3" fill="none" stroke="#e5332a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="608" cy="340.7" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<circle cx="700.7" cy="294.3" r="5" fill="#1d1d1f" stroke="#1d1d1f" stroke-width="1.8"/>
+<text x="598" y="408" fill="#8a8a8f" font-size="11" text-anchor="start">5 legs</text>
+</svg>

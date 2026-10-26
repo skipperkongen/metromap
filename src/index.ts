@@ -10,7 +10,24 @@ export type {
 } from "./types.js";
 export { layout, type LayoutOptions } from "./layout.js";
 export { defineGridAlgorithm, type GridAlgorithmSpec, type LayoutAlgorithm } from "./algorithm.js";
-export { ALGORITHMS, gridSnap, relaxRefine, type GridSnapOptions, type RelaxRefineOptions } from "./algorithms/index.js";
+export {
+  ALGORITHMS,
+  gridSnap,
+  relaxRefine,
+  shapeAware,
+  type GridSnapOptions,
+  type RelaxRefineOptions,
+  type ShapeAwareOptions,
+} from "./algorithms/index.js";
+export {
+  DEFAULT_WEIGHTS,
+  evaluate,
+  GOALS,
+  type AestheticScore,
+  type AestheticWeights,
+  type EvaluateOptions,
+  type Goal,
+} from "./aesthetics.js";
 export {
   buildMetroMap,
   prepareNetwork,

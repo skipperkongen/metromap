@@ -6,7 +6,11 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { computeStages, octilinearTarget } from "../dist/algorithms/relax-refine.js";
 import { layout } from "../dist/layout.js";
-import { offsetPolyline, routeEdge, snapToFreeCells } from "../dist/pipeline.js";
+import { offsetPolyline, prepareNetwork, project, routeEdge, snapToFreeCells } from "../dist/pipeline.js";
+import { evaluate, GOALS, octant, signedTurn } from "../dist/aesthetics.js";
+import { arcPaths, shapeAware } from "../dist/algorithms/shape-aware.js";
+import { relaxRefine } from "../dist/algorithms/relax-refine.js";
+import { gridSnap } from "../dist/algorithms/grid-snap.js";
 import { fillMissingCoordinates } from "../dist/network.js";
 import { renderSvg } from "../dist/render.js";
 import { copenhagenMetro } from "../dist/samples/copenhagen.js";
@@ -42,8 +46,9 @@ ${body}
 }
 
 const f = (n) => String(Math.round(n * 10) / 10);
+const escapeXml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const text = (x, y, s, o = {}) =>
-  `<text x="${f(x)}" y="${f(y)}" fill="${o.fill ?? C.ink}" font-size="${o.size ?? 13}" text-anchor="${o.anchor ?? "start"}"${o.weight ? ` font-weight="${o.weight}"` : ""}${o.italic ? ` font-style="italic"` : ""}>${s}</text>`;
+  `<text x="${f(x)}" y="${f(y)}" fill="${o.fill ?? C.ink}" font-size="${o.size ?? 13}" text-anchor="${o.anchor ?? "start"}"${o.weight ? ` font-weight="${o.weight}"` : ""}${o.italic ? ` font-style="italic"` : ""}>${escapeXml(s)}</text>`;
 const line = (a, b, o = {}) =>
   `<line x1="${f(a.x)}" y1="${f(a.y)}" x2="${f(b.x)}" y2="${f(b.y)}" stroke="${o.stroke ?? C.ink}" stroke-width="${o.width ?? 2}" stroke-linecap="round"${o.dash ? ` stroke-dasharray="${o.dash}"` : ""}${o.arrow ? ` marker-end="url(#arrow)"` : ""}${o.opacity ? ` opacity="${o.opacity}"` : ""}/>`;
 const dot = (p, o = {}) =>
@@ -94,6 +99,11 @@ function panelTitle(box, title, subtitle) {
   return text(box.x + 4, box.y + 16, title, { weight: 600 }) + (subtitle ? text(box.x + 4, box.y + 33, subtitle, { fill: C.muted, size: 12 }) : "");
 }
 
+/** A rendered map's contents for embedding in a figure, without its own <svg> wrapper and background. */
+function embedded(svgText) {
+  return svgText.replace(/<svg [^>]*>/, "").replace("</svg>", "").replace(/<rect width="100%" height="100%"[^>]*\/>/, "");
+}
+
 function write(name, content) {
   writeFileSync(join(OUT, name), content);
   console.log("wrote", join("docs/images", name));
@@ -139,7 +149,7 @@ const geoPositions = stages.geo.map((p) => p ?? { x: 0, y: 0 });
   body.push(drawNetwork(stages, stages.relaxed, inner(boxes[1])));
   body.push(drawNetwork(stages, stages.grid, inner(boxes[2]), { grid: true, paths: stages.paths }));
   const map = layout(cph);
-  const finalSvg = renderSvg(map, { legend: false }).replace(/<svg [^>]*>/, "").replace("</svg>", "");
+  const finalSvg = embedded(renderSvg(map, { legend: false }));
   const ib = inner(boxes[3]);
   const k = Math.min(ib.w / map.width, ib.h / map.height);
   body.push(
@@ -509,5 +519,143 @@ const geoPositions = stages.geo.map((p) => p ?? { x: 0, y: 0 });
   write("labels.svg", svg(600, 250, body.join("\n")));
 }
 
+// ---------- 13. Aesthetics: zig-zag vs smooth ----------
+
+/** Signed turns (in 45° units) along a polyline; for a closed ring include the turn back to the start. */
+function turnsOf(points, closed = false) {
+  const pts = closed ? [...points, points[0], points[1]] : points;
+  const dirs = [];
+  for (let i = 1; i < pts.length; i++) dirs.push(octant({ x: pts[i].x - pts[i - 1].x, y: pts[i].y - pts[i - 1].y }));
+  return dirs.slice(1).map((d, i) => signedTurn(dirs[i], d));
+}
+
+/** A one-line network through grid points, prepared for `evaluate`. */
+function lineNetwork(points, closed = false) {
+  const names = points.map((_, i) => `S${i}`);
+  return prepareNetwork({ stations: names.map((name) => ({ name })), lines: [{ name: "L", route: closed ? [...names, names[0]] : names }] });
+}
+
+{
+  const P = 56;
+  const panel = (ox, title, pts, color) => {
+    const at = (p) => ({ x: ox + 40 + p.x * P, y: 80 + p.y * P });
+    const out = [text(ox + 20, 30, title, { weight: 600 })];
+    for (let gx = 0; gx <= 4; gx++) for (let gy = 0; gy <= 2; gy++) out.push(dot(at({ x: gx, y: gy }), { r: 1.6, fill: C.faint, stroke: "none" }));
+    out.push(poly(pts.map(at), { stroke: color, width: 6 }));
+    turnsOf(pts).forEach((t, i) => {
+      if (t === 0) return;
+      const p = at(pts[i + 1]);
+      out.push(text(p.x, p.y - 14, t > 0 ? `+${t}` : String(t), { anchor: "middle", size: 13, weight: 700, fill: t > 0 ? C.blue : C.accent }));
+    });
+    pts.forEach((p) => out.push(dot(at(p), { r: 3.5 })));
+    const score = evaluate(lineNetwork(pts), pts);
+    out.push(text(ox + 20, 232, `turns: ${score.count.turn} · zig-zags: ${score.count.zigzag}`, { size: 12, fill: C.muted }));
+    return out.join("\n");
+  };
+  const zig = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 2 }];
+  const smooth = [{ x: 0, y: 0 }, { x: 2, y: 0 }, { x: 3, y: 1 }, { x: 4, y: 2 }];
+  const body = [
+    panel(0, "Zig-zag: turns alternate sign", zig, C.accent),
+    panel(330, "Smooth: one turn", smooth, C.green),
+    text(20, 258, "Numbers: signed turn at each corner, in 45° steps (+ clockwise, − anticlockwise on screen).", { size: 12, fill: C.muted }),
+  ];
+  write("zigzag.svg", svg(660, 272, body.join("\n")));
+}
+
+// ---------- 14. Aesthetics: ring shapes ----------
+{
+  const P = 40;
+  const panel = (ox, title, pts, color) => {
+    const at = (p) => ({ x: ox + 50 + p.x * P, y: 70 + p.y * P });
+    const out = [text(ox + 20, 30, title, { weight: 600 })];
+    out.push(`<polygon points="${pts.map((p) => `${f(at(p).x)},${f(at(p).y)}`).join(" ")}" fill="none" stroke="${color}" stroke-width="6" stroke-linejoin="round"/>`);
+    const turns = turnsOf(pts, true);
+    pts.forEach((p, i) => {
+      const t = turns[(i - 1 + pts.length) % pts.length];
+      const q = at(p);
+      out.push(dot(q, { r: 3.5 }));
+      if (t !== 0) out.push(text(q.x, q.y - 12, t > 0 ? `+${t}` : String(t), { anchor: "middle", size: 12, weight: 700, fill: t > 0 ? C.blue : C.accent }));
+    });
+    const score = evaluate(lineNetwork(pts, true), pts);
+    out.push(text(ox + 20, 268, `turn sum: ${turns.reduce((a, b) => a + b, 0) > 0 ? "+" : ""}${turns.reduce((a, b) => a + b, 0)} (= ±360°)`, { size: 12 }));
+    out.push(text(ox + 20, 286, `dents: ${score.count.loopConcave} · sharp: ${score.count.loopSharp} · zig-zags: ${score.count.zigzag}`, { size: 12, fill: C.muted }));
+    return out.join("\n");
+  };
+  const dented = [
+    { x: 0, y: 0 }, { x: 2, y: 0 }, { x: 3, y: 1 }, { x: 4, y: 1 }, { x: 4, y: 4 }, { x: 2, y: 4 }, { x: 2, y: 3 }, { x: 0, y: 3 },
+  ];
+  const square = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: 4, y: 4 }, { x: 0, y: 4 }];
+  const octagon = [
+    { x: 1, y: 0 }, { x: 3, y: 0 }, { x: 4, y: 1 }, { x: 4, y: 3 }, { x: 3, y: 4 }, { x: 1, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 1 },
+  ];
+  const body = [
+    panel(0, "Dented", dented, C.faint),
+    panel(260, "Convex, 90° corners", square, C.amber),
+    panel(520, "Convex octagon, 45° corners", octagon, C.accent),
+  ];
+  write("ring-shapes.svg", svg(800, 302, body.join("\n")));
+}
+
+// ---------- 15. Aesthetics: convex arcs for a chain ----------
+{
+  const a = { x: 0, y: 4 };
+  const b = { x: 6, y: 1 };
+  const all = arcPaths(a, b);
+  // Show a spread of shapes: by number of legs, then length.
+  const byLegs = new Map();
+  for (const p of all) {
+    const k = p.length - 1;
+    if (!byLegs.has(k)) byLegs.set(k, []);
+    byLegs.get(k).push(p);
+  }
+  const shown = [...byLegs.entries()].sort((x, y) => x[0] - y[0]).flatMap(([, ps]) => ps.sort((x, y) => x.length - y.length).slice(0, 2)).slice(0, 8);
+  const cols = 4;
+  const body = [text(20, 28, `Convex arcs between two fixed stations (${all.length} in total; 8 shown)`, { weight: 600 })];
+  shown.forEach((path, i) => {
+    const ox = 20 + (i % cols) * 190;
+    const oy = 50 + Math.floor(i / cols) * 190;
+    const at = fitter(path, { x: ox, y: oy, w: 175, h: 155 }, 18);
+    body.push(`<rect x="${ox}" y="${oy}" width="175" height="175" rx="8" fill="none" stroke="${C.grid}"/>`);
+    body.push(poly(path.map(at), { stroke: C.accent, width: 4 }));
+    body.push(dot(at(a), { r: 5, fill: C.ink }), dot(at(b), { r: 5, fill: C.ink }));
+    body.push(text(ox + 8, oy + 168, `${path.length - 1} leg${path.length > 2 ? "s" : ""}`, { size: 11, fill: C.muted }));
+  });
+  write("arcs.svg", svg(800, 440, body.join("\n")));
+}
+
+// ---------- 16. Algorithm comparison ----------
+{
+  const algorithms = [relaxRefine, shapeAware, gridSnap];
+  const prepared = prepareNetwork(cph);
+  const geo = project(prepared.stations);
+  const W = 1000;
+  const body = [];
+  const rows = [];
+  algorithms.forEach((alg, i) => {
+    const t = performance.now();
+    const map = alg.layout(cph);
+    const ms = Math.round(performance.now() - t);
+    // Recover grid positions from the canvas map (spacing 64, padding 80) to score them.
+    const grid = map.stations.map((s) => ({ x: Math.round((s.x - 80) / 64), y: Math.round((s.y - 80) / 64) }));
+    const score = evaluate(prepared, grid, { geo });
+    rows.push({ name: alg.name, ms, score });
+    const box = { x: 16 + i * 330, y: 50, w: 315, h: 330 };
+    const inner = embedded(renderSvg(map, { legend: false }));
+    const k = Math.min(box.w / map.width, box.h / map.height);
+    body.push(`<g transform="translate(${f(box.x + (box.w - map.width * k) / 2)} ${f(box.y + (box.h - map.height * k) / 2)}) scale(${k.toFixed(4)})">${inner}</g>`);
+    body.push(text(box.x + 4, 24, alg.name, { weight: 600 }));
+    body.push(text(box.x + 4, 42, `cost ${score.total.toFixed(0)} · ${score.count.turn} turns · ${score.count.zigzag} zig-zags · ${score.count.loopConcave} dents`, { size: 12, fill: C.muted }));
+  });
+  write("comparison.svg", svg(W, 396, body.join("\n")));
+  // Markdown table for docs/aesthetics.md.
+  const header = `| Goal | ${rows.map((r) => r.name).join(" | ")} |`;
+  const lines = [header, `| --- |${rows.map(() => " ---: |").join("")}`];
+  for (const g of GOALS) lines.push(`| \`${g}\` | ${rows.map((r) => r.score.count[g]).join(" | ")} |`);
+  lines.push(`| **Total cost** | ${rows.map((r) => `**${r.score.total.toFixed(1)}**`).join(" | ")} |`);
+  lines.push(`| Time (Node) | ${rows.map((r) => `${r.ms} ms`).join(" | ")} |`);
+  console.log("\nComparison table (counts per goal):\n" + lines.join("\n") + "\n");
+}
+
 // ---------- 12. Full maps ----------
 write("copenhagen.svg", renderSvg(layout(copenhagenMetro())));
+write("copenhagen-shape-aware.svg", renderSvg(shapeAware.layout(copenhagenMetro())));

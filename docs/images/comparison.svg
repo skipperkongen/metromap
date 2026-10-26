@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 396" width="1000" height="396" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+</defs>
+<rect width="1000" height="396" rx="12" fill="#ffffff"/>
+<g transform="translate(16 67) scale(0.2983)">
+
+<path d="M80 404 L130 404 Q144 404 158 404 L194 404 Q208 404 222 404 L258 404 Q272 404 286 404 L398.5 404 Q400 404 401.4 403.4 L401.4 403.4 Q402.8 402.8 403.9 401.7 L465.7 339.9 Q466.8 338.8 465.4 339.4 L465.4 339.4 Q464 340 465.5 340 L590.5 340 Q592 340 590.6 339.4 L590.6 339.4 Q589.2 338.8 590.3 339.9 L652.1 401.7 Q653.2 402.8 652.6 401.4 L652.6 401.4 Q652 400 652 401.5 L652 462 Q652 464 654 464 L654 464 Q656 464 656 466 L656 514 Q656 528 656 542 L656 578 Q656 592 656 606 L656 706 Q656 720 656 734 L656 770 Q656 784 656 798 L656 834 Q656 848 656 862 L656 912" fill="none" stroke="#00814e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M80 396 L130 396 Q144 396 158 396 L194 396 Q208 396 222 396 L258 396 Q272 396 286 396 L398.5 396 Q400 396 398.6 396.6 L398.6 396.6 Q397.2 397.2 398.3 396.1 L460.1 334.3 Q461.2 333.2 462.6 332.6 L462.6 332.6 Q464 332 465.5 332 L590.5 332 Q592 332 593.4 332.6 L593.4 332.6 Q594.8 333.2 595.9 334.3 L657.7 396.1 Q658.8 397.2 659.4 398.6 L659.4 398.6 Q660 400 660 401.5 L660 462 Q660 464 658 464 L658 464 Q656 464 657.4 465.4 L710.1 518.1 Q720 528 734 528 L770 528 Q784 528 798 528 L834 528 Q848 528 857.9 537.9 L902.1 582.1 Q912 592 921.9 601.9 L966.1 646.1 Q976 656 976 670 L976 770 Q976 784 976 798 L976 848" fill="none" stroke="#f5b31a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M524 400 L524 461.2 Q524 464 526 466 L526 466 Q528 468 530.8 468 L590.5 468 Q592 468 593.4 467.4 L593.4 467.4 Q594.8 466.8 595.9 465.7 L657.7 403.9 Q658.8 402.8 659.4 401.4 L659.4 401.4 Q660 400 660 398.5 L660 350 Q660 336 660 322 L660 210 Q660 208 658 208 L658 208 Q656 208 654.6 206.6 L601.9 153.9 Q592 144 582.1 134.1 L537.9 89.9 Q528 80 514 80 L478 80 Q464 80 454.1 89.9 L409.9 134.1 Q400 144 400 158 L400 194 Q400 208 414 208 L450 208 Q464 208 464 222 L464 258 Q464 272 454.1 281.9 L409.9 326.1 Q400 336 400 350 L400 386 Q400 400 400 414 L400 450 Q400 464 414 464 L450 464 Q464 464 473.9 454.1 L528 400" fill="none" stroke="#e3242b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M656 80 L656 130 Q656 144 656 158 L656 206 Q656 208 654 208 L654 208 Q652 208 652 210 L652 322 Q652 336 652 350 L652 398.5 Q652 400 652.6 398.6 L652.6 398.6 Q653.2 397.2 652.1 398.3 L590.3 460.1 Q589.2 461.2 590.6 460.6 L590.6 460.6 Q592 460 590.5 460 L530.8 460 Q528 460 530 462 L530 462 Q532 464 532 461.2 L532 402 Q532 400 530 400 L530 400 Q528 400 528 402 L528 514 Q528 528 528 542 L528 578 Q528 592 518.1 601.9 L409.9 710.1 Q400 720 386 720 L350 720 Q336 720 322 720 L272 720" fill="none" stroke="#0093d0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="80" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="144" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="208" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="272" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="400" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="464" cy="336" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="592" cy="336" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="656" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="656" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="656" cy="528" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="592" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="848" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="912" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="720" cy="528" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="528" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="848" cy="528" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="912" cy="592" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="976" cy="656" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="976" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="976" cy="848" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="528" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="592" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="656" cy="336" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="656" cy="208" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="592" cy="144" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="80" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="80" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="400" cy="144" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="400" cy="208" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="208" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="272" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="400" cy="336" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="400" cy="464" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="464" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="80" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="144" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="528" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="592" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="400" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="336" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="272" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<g font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" fill="#1d1d1f" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"><text x="669" y="404" text-anchor="start">Kongens Nytorv</text><text x="409.8" y="421" text-anchor="start">Frederiksberg</text><text x="67" y="404" text-anchor="end">Vanløse</text><text x="144" y="383.8" text-anchor="middle">Flintholm</text><text x="208" y="383.8" text-anchor="middle">Lindevang</text><text x="281.8" y="387.1" text-anchor="start">Fasanvej</text><text x="473.8" y="323.1" text-anchor="start">Forum</text><text x="592" y="319.8" text-anchor="middle">Nørreport</text><text x="669" y="468" text-anchor="start">Christianshavn</text><text x="541" y="404" text-anchor="start">København H</text><text x="528" y="488.2" text-anchor="middle">Rådhuspladsen</text><text x="592" y="447.8" text-anchor="middle">Gammel Strand</text><text x="669" y="340" text-anchor="start">Marmorkirken</text><text x="669" y="212" text-anchor="start">Østerport</text><text x="647.8" y="532" text-anchor="end">Islands Brygge</text><text x="664.2" y="596" text-anchor="start">DR Byen</text><text x="664.2" y="724" text-anchor="start">Sundby</text><text x="664.2" y="788" text-anchor="start">Bella Center</text><text x="664.2" y="852" text-anchor="start">Ørestad</text><text x="664.2" y="916" text-anchor="start">Vestamager</text><text x="720" y="547.4" text-anchor="middle">Amagerbro</text><text x="784" y="516.6" text-anchor="middle">Lergravsparken</text><text x="854.2" y="518.7" text-anchor="start">Øresund</text><text x="918.2" y="582.7" text-anchor="start">Amager Strand</text><text x="984.2" y="660" text-anchor="start">Femøren</text><text x="984.2" y="788" text-anchor="start">Kastrup</text><text x="984.2" y="852" text-anchor="start">Lufthavnen</text><text x="585.9" y="161.4" text-anchor="end">Trianglen</text><text x="534.2" y="70.7" text-anchor="start">Poul Henningsens Plads</text><text x="464" y="68.6" text-anchor="middle">Vibenshus Runddel</text><text x="391.8" y="148" text-anchor="end">Skjolds Plads</text><text x="391.8" y="212" text-anchor="end">Nørrebro</text><text x="472.2" y="212" text-anchor="start">Nørrebros Runddel</text><text x="472.2" y="276" text-anchor="start">Nuuks Plads</text><text x="391.8" y="340" text-anchor="end">Aksel Møllers Have</text><text x="391.8" y="468" text-anchor="end">Frederiksberg Allé</text><text x="464" y="452.6" text-anchor="middle">Enghave Plads</text><text x="662.2" y="97.4" text-anchor="start">Orientkaj</text><text x="664.2" y="148" text-anchor="start">Nordhavn</text><text x="519.8" y="532" text-anchor="end">Havneholmen</text><text x="536.2" y="596" text-anchor="start">Enghave Brygge</text><text x="406.2" y="737.4" text-anchor="start">Sluseholmen</text><text x="336" y="708.6" text-anchor="middle">Mozarts Plads</text><text x="263.8" y="724" text-anchor="end">Ny Ellebjerg</text></g>
+</g>
+<text x="20" y="24" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Relax &amp; refine</text>
+<text x="20" y="42" fill="#8a8a8f" font-size="12" text-anchor="start">cost 239 · 32 turns · 8 zig-zags · 3 dents</text>
+<g transform="translate(346 95.9) scale(0.2401)">
+
+<path d="M80 404 L130 404 Q144 404 158 404 L194 404 Q208 404 222 404 L258 404 Q272 404 286 404 L322 404 Q336 404 350 404 L450 404 Q464 404 478 404 L578 404 Q592 404 606 404 L718.5 404 Q720 404 718.6 403.4 L718.6 403.4 Q717.2 402.8 718.3 403.9 L779.8 465.4 Q781.2 466.8 782.6 465.4 L782.6 465.4 Q784 464 784 466 L784 514 Q784 528 784 542 L784 578 Q784 592 784 606 L784 642 Q784 656 784 670 L784 706 Q784 720 784 734 L784 770 Q784 784 784 798 L784 848" fill="none" stroke="#00814e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M80 396 L130 396 Q144 396 158 396 L194 396 Q208 396 222 396 L258 396 Q272 396 286 396 L322 396 Q336 396 350 396 L450 396 Q464 396 478 396 L578 396 Q592 396 606 396 L718.5 396 Q720 396 721.4 396.6 L721.4 396.6 Q722.8 397.2 723.9 398.3 L785.4 459.8 Q786.8 461.2 785.4 462.6 L785.4 462.6 Q784 464 785.4 465.4 L838.1 518.1 Q848 528 857.9 537.9 L902.1 582.1 Q912 592 921.9 601.9 L966.1 646.1 Q976 656 985.9 665.9 L1030.1 710.1 Q1040 720 1049.9 729.9 L1094.1 774.1 Q1104 784 1113.9 793.9 L1158.1 838.1 Q1168 848 1177.9 857.9 L1232 912" fill="none" stroke="#f5b31a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M530.8 594.8 L584.9 540.7 Q594.8 530.8 604.7 520.9 L648.9 476.7 Q658.8 466.8 668.7 456.9 L721.7 403.9 Q722.8 402.8 723.4 401.4 L723.4 401.4 Q724 400 724 398.5 L724 350 Q724 336 724 322 L724 274 Q724 272 722 272 L722 272 Q720 272 718.6 270.6 L665.9 217.9 Q656 208 646.1 198.1 L601.9 153.9 Q592 144 582.1 134.1 L537.9 89.9 Q528 80 514 80 L478 80 Q464 80 454.1 89.9 L409.9 134.1 Q400 144 390.1 153.9 L345.9 198.1 Q336 208 336 222 L336 258 Q336 272 336 286 L336 322 Q336 336 336 350 L336 386 Q336 400 336 414 L336 514 Q336 528 345.9 537.9 L390.1 582.1 Q400 592 414 592 L528 592" fill="none" stroke="#e3242b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M720 144 L720 194 Q720 208 720 222 L720 270 Q720 272 718 272 L718 272 Q716 272 716 274 L716 322 Q716 336 716 350 L716 398.5 Q716 400 716.6 398.6 L716.6 398.6 Q717.2 397.2 716.1 398.3 L663.1 451.3 Q653.2 461.2 643.3 471.1 L599.1 515.3 Q589.2 525.2 579.3 535.1 L526.6 587.8 Q525.2 589.2 526.6 590.6 L526.6 590.6 Q528 592 526.6 593.4 L473.9 646.1 Q464 656 454.1 665.9 L409.9 710.1 Q400 720 390.1 729.9 L345.9 774.1 Q336 784 326.1 793.9 L281.9 838.1 Q272 848 262.1 857.9 L208 912" fill="none" stroke="#0093d0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="80" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="144" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="208" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="272" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="336" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="464" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="592" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="720" cy="400" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="784" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="784" cy="528" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="592" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="656" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="848" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="848" cy="528" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="912" cy="592" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="976" cy="656" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1040" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1104" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1168" cy="848" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1232" cy="912" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="592" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="592" cy="528" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="656" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="720" cy="336" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="720" cy="272" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="656" cy="208" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="592" cy="144" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="80" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="80" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="400" cy="144" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="336" cy="208" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="336" cy="272" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="336" cy="336" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="336" cy="528" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="400" cy="592" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="720" cy="144" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="720" cy="208" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="656" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="400" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="336" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="272" cy="848" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="208" cy="912" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<g font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" fill="#1d1d1f" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"><text x="729.8" y="387.1" text-anchor="start">Kongens Nytorv</text><text x="345.8" y="387.1" text-anchor="start">Frederiksberg</text><text x="67" y="404" text-anchor="end">Vanløse</text><text x="144" y="383.8" text-anchor="middle">Flintholm</text><text x="208" y="383.8" text-anchor="middle">Lindevang</text><text x="272" y="383.8" text-anchor="middle">Fasanvej</text><text x="473.8" y="387.1" text-anchor="start">Forum</text><text x="601.8" y="387.1" text-anchor="start">Nørreport</text><text x="797" y="468" text-anchor="start">Christianshavn</text><text x="537.8" y="613" text-anchor="start">København H</text><text x="601.8" y="549" text-anchor="start">Rådhuspladsen</text><text x="665.8" y="485" text-anchor="start">Gammel Strand</text><text x="733" y="340" text-anchor="start">Marmorkirken</text><text x="733" y="276" text-anchor="start">Østerport</text><text x="775.8" y="532" text-anchor="end">Islands Brygge</text><text x="792.2" y="596" text-anchor="start">DR Byen</text><text x="792.2" y="660" text-anchor="start">Sundby</text><text x="792.2" y="724" text-anchor="start">Bella Center</text><text x="792.2" y="788" text-anchor="start">Ørestad</text><text x="792.2" y="852" text-anchor="start">Vestamager</text><text x="854.2" y="518.7" text-anchor="start">Amagerbro</text><text x="918.2" y="582.7" text-anchor="start">Lergravsparken</text><text x="982.2" y="646.7" text-anchor="start">Øresund</text><text x="1046.2" y="710.7" text-anchor="start">Amager Strand</text><text x="1110.2" y="774.7" text-anchor="start">Femøren</text><text x="1174.2" y="838.7" text-anchor="start">Kastrup</text><text x="1240.2" y="916" text-anchor="start">Lufthavnen</text><text x="649.9" y="225.4" text-anchor="end">Trianglen</text><text x="585.9" y="161.4" text-anchor="end">Poul Henningsens Plads</text><text x="534.2" y="70.7" text-anchor="start">Vibenshus Runddel</text><text x="464" y="68.6" text-anchor="middle">Skjolds Plads</text><text x="393.9" y="134.7" text-anchor="end">Nørrebro</text><text x="327.8" y="212" text-anchor="end">Nørrebros Runddel</text><text x="344.2" y="276" text-anchor="start">Nuuks Plads</text><text x="344.2" y="340" text-anchor="start">Aksel Møllers Have</text><text x="327.8" y="532" text-anchor="end">Frederiksberg Allé</text><text x="406.2" y="582.7" text-anchor="start">Enghave Plads</text><text x="728.2" y="148" text-anchor="start">Orientkaj</text><text x="728.2" y="212" text-anchor="start">Nordhavn</text><text x="470.2" y="673.4" text-anchor="start">Havneholmen</text><text x="406.2" y="737.4" text-anchor="start">Enghave Brygge</text><text x="342.2" y="801.4" text-anchor="start">Sluseholmen</text><text x="278.2" y="865.4" text-anchor="start">Mozarts Plads</text><text x="199.8" y="916" text-anchor="end">Ny Ellebjerg</text></g>
+</g>
+<text x="350" y="24" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Shape-aware</text>
+<text x="350" y="42" fill="#8a8a8f" font-size="12" text-anchor="start">cost 27 · 12 turns · 0 zig-zags · 0 dents</text>
+<g transform="translate(676 50.5) scale(0.2188)">
+
+<path d="M80 468 L130 468 Q144 468 158 468 L270.5 468 Q272 468 270.6 467.4 L270.6 467.4 Q269.2 466.8 270.3 467.9 L332.1 529.7 Q333.2 530.8 334.6 531.4 L334.6 531.4 Q336 532 337.5 532 L450 532 Q464 532 478 532 L578 532 Q592 532 606 532 L706 532 Q720 532 734 532 L846.5 532 Q848 532 846.6 531.4 L846.6 531.4 Q845.2 530.8 846.3 531.9 L898.1 583.8 Q908 593.7 908 607.7 L908 654 Q908 656 910 656 L910 656 Q912 656 910.6 657.4 L857.9 710.1 Q848 720 848 734 L848 770 Q848 784 848 798 L848 834 Q848 848 857.9 857.9 L902.1 902.1 Q912 912 912 926 L912 962 Q912 976 902.1 985.9 L857.9 1030.1 Q848 1040 848 1054 L848 1154 Q848 1168 838.1 1177.9 L793.9 1222.1 Q784 1232 784 1246 L784 1282 Q784 1296 784 1310 L784 1424" fill="none" stroke="#00814e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M80 460 L130 460 Q144 460 158 460 L270.5 460 Q272 460 273.4 460.6 L273.4 460.6 Q274.8 461.2 275.9 462.3 L337.7 524.1 Q338.8 525.2 337.4 524.6 L337.4 524.6 Q336 524 337.5 524 L450 524 Q464 524 478 524 L578 524 Q592 524 606 524 L706 524 Q720 524 734 524 L846.5 524 Q848 524 849.4 524.6 L849.4 524.6 Q850.8 525.2 851.9 526.3 L906.1 580.4 Q916 590.3 916 604.3 L916 654 Q916 656 914 656 L914 656 Q912 656 913.4 657.4 L966.1 710.1 Q976 720 976 734 L976 770 Q976 784 990 784 L1090 784 Q1104 784 1118 784 L1218 784 Q1232 784 1232 798 L1232 898 Q1232 912 1241.9 921.9 L1286.1 966.1 Q1296 976 1296 990 L1296 1026 Q1296 1040 1296 1054 L1296 1090 Q1296 1104 1305.9 1113.9 L1350.1 1158.1 Q1360 1168 1360 1182 L1360 1232" fill="none" stroke="#f5b31a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M724 656 L724 594.8 Q724 592 722 594 L722 594 Q720 596 722.8 596 L782.5 596 Q784 596 785.4 595.4 L785.4 595.4 Q786.8 594.8 787.9 593.7 L840.9 540.7 Q850.8 530.8 860.7 520.9 L913.7 467.9 Q914.8 466.8 915.4 465.4 L915.4 465.4 Q916 464 916 462.5 L916 412.3 Q916 398.3 906.1 388.4 L852.2 334.6 Q850.8 333.2 849.4 334.6 L849.4 334.6 Q848 336 846.6 334.6 L793.9 281.9 Q784 272 784 258 L784 158 Q784 144 774.1 153.9 L729.9 198.1 Q720 208 706 208 L606 208 Q592 208 578 208 L542 208 Q528 208 518.1 217.9 L473.9 262.1 Q464 272 464 286 L464 322 Q464 336 473.9 345.9 L518.1 390.1 Q528 400 518.1 409.9 L473.9 454.1 Q464 464 464 478 L464 514 Q464 528 464 542 L464 578 Q464 592 473.9 601.9 L518.1 646.1 Q528 656 528 670 L528 706 Q528 720 537.9 710.1 L582.1 665.9 Q592 656 606 656 L720 656" fill="none" stroke="#e3242b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M976 80 L976 130 Q976 144 966.1 153.9 L921.9 198.1 Q912 208 912 222 L912 258 Q912 272 902.1 281.9 L849.4 334.6 Q848 336 846.6 337.4 L846.6 337.4 Q845.2 338.8 846.6 340.2 L898.1 391.8 Q908 401.7 908 415.7 L908 462.5 Q908 464 908.6 462.6 L908.6 462.6 Q909.2 461.2 908.1 462.3 L855.1 515.3 Q845.2 525.2 835.3 535.1 L782.3 588.1 Q781.2 589.2 782.6 588.6 L782.6 588.6 Q784 588 782.5 588 L722.8 588 Q720 588 718 590 L718 590 Q716 592 716 594.8 L716 654 Q716 656 718 656 L718 656 Q720 656 718.6 657.4 L665.9 710.1 Q656 720 656 734 L656 834 Q656 848 656 862 L656 898 Q656 912 646.1 921.9 L537.9 1030.1 Q528 1040 518.1 1030.1 L473.9 985.9 Q464 976 454.1 966.1 L409.9 921.9 Q400 912 386 912 L336 912" fill="none" stroke="#0093d0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="80" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="144" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="272" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="336" cy="528" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="464" cy="528" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="592" cy="528" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="720" cy="528" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="848" cy="528" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="912" cy="656" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="848" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="912" cy="912" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="848" cy="1040" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="848" cy="1168" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="1296" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="1424" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="976" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1104" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1232" cy="784" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1232" cy="912" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1296" cy="1040" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1360" cy="1168" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="1360" cy="1232" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="720" cy="656" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="720" cy="592" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="784" cy="592" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="912" cy="464" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="848" cy="336" r="8" fill="#fff" stroke="#1d1d1f" stroke-width="2"/>
+<circle cx="784" cy="272" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="784" cy="144" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="720" cy="208" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="592" cy="208" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="272" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="336" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="400" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="464" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="656" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="976" cy="80" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="912" cy="208" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="720" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="656" cy="848" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="528" cy="1040" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="464" cy="976" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<circle cx="336" cy="912" r="3.2" fill="#fff" stroke="#1d1d1f" stroke-width="1.6"/>
+<g font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" fill="#1d1d1f" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"><text x="838.3" y="515.1" text-anchor="end">Kongens Nytorv</text><text x="473.8" y="515.1" text-anchor="start">Frederiksberg</text><text x="67" y="468" text-anchor="end">Vanløse</text><text x="153.8" y="451.1" text-anchor="start">Flintholm</text><text x="281.8" y="451.1" text-anchor="start">Lindevang</text><text x="345.8" y="515.1" text-anchor="start">Fasanvej</text><text x="601.8" y="515.1" text-anchor="start">Forum</text><text x="729.8" y="549" text-anchor="start">Nørreport</text><text x="925" y="660" text-anchor="start">Christianshavn</text><text x="733" y="660" text-anchor="start">København H</text><text x="707" y="596" text-anchor="end">Rådhuspladsen</text><text x="793.8" y="613" text-anchor="start">Gammel Strand</text><text x="925" y="468" text-anchor="start">Marmorkirken</text><text x="835" y="340" text-anchor="end">Østerport</text><text x="856.2" y="788" text-anchor="start">Islands Brygge</text><text x="920.2" y="916" text-anchor="start">DR Byen</text><text x="839.8" y="1044" text-anchor="end">Sundby</text><text x="856.2" y="1172" text-anchor="start">Bella Center</text><text x="792.2" y="1300" text-anchor="start">Ørestad</text><text x="792.2" y="1428" text-anchor="start">Vestamager</text><text x="982.2" y="774.7" text-anchor="start">Amagerbro</text><text x="1110.2" y="774.7" text-anchor="start">Lergravsparken</text><text x="1240.2" y="788" text-anchor="start">Øresund</text><text x="1223.8" y="916" text-anchor="end">Amager Strand</text><text x="1304.2" y="1044" text-anchor="start">Femøren</text><text x="1368.2" y="1172" text-anchor="start">Kastrup</text><text x="1368.2" y="1236" text-anchor="start">Lufthavnen</text><text x="775.8" y="276" text-anchor="end">Trianglen</text><text x="792.2" y="148" text-anchor="start">Poul Henningsens Plads</text><text x="720" y="227.4" text-anchor="middle">Vibenshus Runddel</text><text x="598.2" y="198.7" text-anchor="start">Skjolds Plads</text><text x="455.8" y="276" text-anchor="end">Nørrebro</text><text x="455.8" y="340" text-anchor="end">Nørrebros Runddel</text><text x="536.2" y="404" text-anchor="start">Nuuks Plads</text><text x="455.8" y="468" text-anchor="end">Aksel Møllers Have</text><text x="534.2" y="646.7" text-anchor="start">Frederiksberg Allé</text><text x="519.8" y="724" text-anchor="end">Enghave Plads</text><text x="984.2" y="84" text-anchor="start">Orientkaj</text><text x="903.8" y="212" text-anchor="end">Nordhavn</text><text x="647.8" y="724" text-anchor="end">Havneholmen</text><text x="664.2" y="852" text-anchor="start">Enghave Brygge</text><text x="534.2" y="1057.4" text-anchor="start">Sluseholmen</text><text x="470.2" y="966.7" text-anchor="start">Mozarts Plads</text><text x="327.8" y="916" text-anchor="end">Ny Ellebjerg</text></g>
+</g>
+<text x="680" y="24" fill="#1d1d1f" font-size="13" text-anchor="start" font-weight="600">Grid snap (baseline)</text>
+<text x="680" y="42" fill="#8a8a8f" font-size="12" text-anchor="start">cost 366 · 54 turns · 38 zig-zags · 6 dents</text>
+</svg>

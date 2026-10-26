@@ -359,11 +359,12 @@ To make a new algorithm available everywhere:
    algorithm. They check that every station is kept, positions are unique, every leg is
    0°/45°/90°, there is one segment per route pair, and everything stays inside the canvas.
 
-Two algorithms ship today:
+Three algorithms ship today:
 
 | Algorithm | Idea | Copenhagen |
 | --- | --- | --- |
 | `relaxRefine` (default) | everything in this document | ~70–100 ms |
+| `shapeAware` | relax & refine, then optimises whole-line shapes: no zig-zags, convex 45° rings, even rhythm ([aesthetics.md](aesthetics.md)) | ~2 s |
 | `gridSnap` | project and round to the grid; steps 3 and 5 skipped | ~1 ms |
 
 The baseline is useful for comparison: it shows what the relaxation and local search add.
@@ -403,7 +404,9 @@ of stations, the all-pairs checks would need a spatial index, such as a grid has
 ## Limitations
 
 - **Local search moves one station at a time.** It can't fix problems that need several
-  stations to move together, such as the staircase on the M3 ring near Nørrebro.
+  stations to move together, such as the staircase on the M3 ring near Nørrebro. The
+  shape-aware algorithm fixes this with chain, ring and compound moves
+  ([aesthetics.md](aesthetics.md)).
 - **Lanes are ordered by input order.** This can make lines cross at a station where they
   split, if the line that turns off sits on the far lane. Choosing the lane order to
   minimise crossings is a known, harder problem ("metro-line crossing minimisation").
