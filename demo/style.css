@@ -146,6 +146,17 @@ textarea {
   flex: 1;
 }
 
+.repo-link {
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.repo-link:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
 /* ---------- Layout ---------- */
 
 .layout {

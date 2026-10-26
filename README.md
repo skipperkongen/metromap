@@ -1,4 +1,7 @@
 # metromap
+
+[Live demo on GitHub Pages](https://skipperkongen.github.io/metromap/) · [skipperkongen.dk/demos/metromap](https://skipperkongen.dk/demos/metromap)
+
 Algorithm to layout and draw a network in the style typical of urban transit metro maps.
 
 Give it stations (optionally with lat/lon) and lines (ordered routes); get back an
